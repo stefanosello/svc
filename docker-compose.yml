@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  svc-backend:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/backend/Dockerfile
+    volumes:
+      - ./backend:/home/node/app
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    container_name: svc-backend
+    expose:
+      - '4000'
+    ports:
+      - '4000:4000'
+    command: ["tail", "-f", "/dev/null"]
+    depends_on:
+      - svc-compiler
+  svc-compiler:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/c++/Dockerfile
+    volumes:
+      - ./shared:/src
+    container_name: svc-compiler
+    command: ["tail", "-f", "/dev/null"]
+
+volumes:
+  shared:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./shared
