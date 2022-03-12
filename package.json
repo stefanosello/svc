@@ -1,0 +1,10 @@
+{
+  "name": "svc",
+  "version": "1.0.0",
+  "description": "Remote compiler for c++ programs",
+  "main": "server.ts",
+  "repository": "git@github.com:Mr5he11/svc.git",
+  "author": "Stefano Sello <sellostefano@gmail.com>",
+  "license": "MIT",
+  "private": true
+}
