@@ -1,19 +1,33 @@
 import express from 'express';
+import axios from 'axios';
+import bodyParser from 'body-parser'
 
-const { spawn } = require("child_process");
-const shlex = require("shlex");
+const instance = axios.create({
+  baseURL: 'http://svc-compiler:1337/',
+})
 
-function compile() {
-  const filename = "main.cpp";
-  const cmd = `docker-compose exec svc-compiler g++ -std=c++17 /src/${filename}`;
+
+async function doRequest(filename: string) {
+  //console.log(instance);
+  const res = await instance.post("/compile", { filename } );
   
-  const shlexed = shlex.split(cmd);
-  return spawn(shlexed.shift(), shlexed);
-  //spawn("docker-compose", [filename])
+  console.log("EXIT CODE:", res.data.exitCode);
+  console.log("STDOUT:", res.data.stdout);
+  console.log("STDERR:", res.data.stderr);
 }
 
 const app = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+
 app.listen(4000, () => {
   console.log(`server running on port 4000`);
-  compile();
+
+  doRequest('main.cpp');
+  
 });

@@ -1,26 +1,25 @@
 {
-  "name": "svc-backend",
+  "name": "svc-compiler",
   "version": "1.0.0",
   "description": "Remote compiler for c++ programs",
-  "main": "src/server.ts",
+  "main": "compiler.ts",
   "repository": "git@github.com:Mr5he11/svc.git",
-  "author": "Stefano Sello <sellostefano@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
     "start": "NODE_PATH=./build node build/index.js",
     "build": "tsc -p .",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/compiler.ts"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "shlex": "^2.1.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "nodemon": "^2.0.15",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
-  },
-  "dependencies": {
-    "axios": "^0.26.1",
-    "body-parser": "^1.19.2",
-    "express": "^4.17.3"
   }
 }

@@ -3,11 +3,11 @@ version: '3.7'
 services:
   svc-backend:
     build:
-      context: .
-      dockerfile: ./dockerfiles/backend/Dockerfile
+      context: ./backend
+      dockerfile: ./Dockerfile
     volumes:
       - ./backend:/home/node/app
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./shared:/src
     container_name: svc-backend
     expose:
       - '4000'
@@ -18,9 +18,14 @@ services:
       - svc-compiler
   svc-compiler:
     build:
-      context: .
-      dockerfile: ./dockerfiles/c++/Dockerfile
+      context: ./compiler
+      dockerfile: ./Dockerfile
+    expose:
+      - '1377'
+    ports:
+      - '1377:1377'
     volumes:
+      - ./compiler:/home/node/app
       - ./shared:/src
     container_name: svc-compiler
     command: ["tail", "-f", "/dev/null"]
