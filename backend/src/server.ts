@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(80, () => {
-  console.log(`server running on port 8080`);
+  console.log(`server running on port 80`);
 
   doRequest('main.cpp');
   
