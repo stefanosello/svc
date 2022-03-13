@@ -17,8 +17,8 @@ services:
     depends_on:
       - compiler
     networks:
-      - svc-web-net
-      - svc-compiler-net
+      - web-net
+      - compiler-net
   compiler:
     container_name: svc-compiler
     build:
@@ -31,7 +31,7 @@ services:
       - ./shared:/src
     command: ["yarn", "run", "dev"]
     networks:
-      - svc-compiler-net
+      - compiler-net
 
 volumes:
   shared:
@@ -41,5 +41,8 @@ volumes:
       device: ./shared
 
 networks:
-  svc-compiler-net:
-  svc-web-net:
+  web-net:
+    driver: bridge
+  compiler-net:
+    driver: bridge
+    internal: true

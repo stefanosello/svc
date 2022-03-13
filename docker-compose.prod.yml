@@ -41,5 +41,8 @@ volumes:
       device: ./shared
 
 networks:
-  svc-compiler-net:
-  svc-web-net:
+  web-net:
+    driver: bridge
+  compiler-net:
+    driver: bridge
+    internal: true
