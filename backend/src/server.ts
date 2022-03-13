@@ -1,19 +1,26 @@
 import express from 'express';
 import axios from 'axios';
 import bodyParser from 'body-parser'
+import path from 'path';
+import fs from 'fs';
 
 const instance = axios.create({
   baseURL: 'http://svc-compiler:1337/',
 })
 
+const base_dir = "/src";
 
 async function doRequest(filename: string) {
-  //console.log(instance);
+  const fullPath = path.join(base_dir, filename);
+  if (!fs.existsSync(fullPath)) {
+    throw new Error("File does not exists!");
+  }
+
   const res = await instance.post("/compile", { filename } );
   
-  console.log("EXIT CODE:", res.data.exitCode);
-  console.log("STDOUT:", res.data.stdout);
-  console.log("STDERR:", res.data.stderr);
+  console.log(`[INFO] exit code: ${res.data.exitCode}`);
+  console.log(`[INFO] stdout:\n${res.data.stdout}`);
+  console.log(`[INFO] stderr:\n${res.data.stderr}`);
 }
 
 const app = express();
@@ -29,8 +36,8 @@ app.get("/", (req, res) => {
 });
 
 app.listen(80, () => {
-  console.log(`server running on port 80`);
-
-  doRequest('main.cpp');
+  console.log(`[INFO] Server running on port 80`);
   
+  doRequest('tests/pass.cpp');
+  doRequest('tests/fail.cpp');
 });

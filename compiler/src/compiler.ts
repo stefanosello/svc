@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { spawn, spawnSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import shlex from 'shlex';
 import path from 'path';
 import bodyParser from 'body-parser'
@@ -9,22 +9,22 @@ import fs from 'fs';
 const app = express();
 const base_dir = "/src";
 
-function compile(fullPath: string, outFilename: string) {
-  const cmdStr = `g++ -std=c++17 ${fullPath} -o ${outFilename}` ;
+function compile(inPath: string, outPath: string) {
+  const cmdStr = `g++ -std=c++17 ${inPath} -o ${outPath}` ;
   const cmdShlexed: string[] = shlex.split(cmdStr) || [];
 
   const cmd = cmdShlexed.shift() || '';
   const args = cmdShlexed || [];
   
-  console.log("[INFO] Executing: ", cmd, args);
+  console.log(`[COMPILER] Executing: ${cmd} ${args.join(" ")}`);
   return spawnSync(cmd, args, { 
     timeout: 1 * 60 * 1000, // 1 minute timeout
   });
 }
 
-function rmFile(filename: string) {
-  console.log("[INFO] Removing file: ", filename);
-  fs.unlinkSync(filename);
+function rmFile(filePath: string) {
+  console.log("[COMPILER] Removing file: ", filePath);
+  fs.unlinkSync(filePath);
 }
 
 // parse application/x-www-form-urlencoded
@@ -39,22 +39,28 @@ app.get("/", (req, res) => {
 
 app.post("/compile", (req, res) => {
   const inFilename = req.body.filename;
-  const inFullPath = path.join(base_dir, inFilename);
+  const inPath = path.join(base_dir, inFilename);
 
   const outFilename: string = `${inFilename}.out`;
-  const process = compile(inFullPath, outFilename);
+  const outPath = path.join(base_dir, outFilename);
+
+  const process = compile(inPath, outPath);
+
+  console.log(`[COMPILER] Compilation terminated with status ${process.status}`);
+  
   if (process.status == 0) {
-    rmFile(outFilename);
+    rmFile(outPath);
   }
   
   const data = {
     exitCode: process.status,
     stdout: process.stdout.toLocaleString(),
     stderr: process.stderr.toLocaleString(),
-  }
+  };
+
   res.status(200).send(data);
 });
 
 app.listen(1337, () => {
-  console.log(`server running on port 1337`);
+  console.log(`[INFO] Compiler service running on port 1337`);
 });
