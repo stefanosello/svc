@@ -10,10 +10,10 @@ services:
       - ./backend:/home/node/app
       - ./shared:/src
     expose:
-      - '8080'
+      - '4000'
     ports:
-      - '8080:80'
-    command: ["yarn", "run", "dev"]
+      - '4000:4000'
+    command: ["yarn", "run", "prod"]
     depends_on:
       - compiler
     networks:
@@ -29,7 +29,7 @@ services:
     volumes:
       - ./compiler:/home/node/app
       - ./shared:/src
-    command: ["yarn", "run", "dev"]
+    command: ["yarn", "run", "prod"]
     networks:
       - svc-compiler-net
 

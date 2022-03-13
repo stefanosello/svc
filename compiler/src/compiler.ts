@@ -33,6 +33,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+app.get("/", (req, res) => {
+  res.status(500).send("<h1>Compiler shouldn't work!</h1>");
+});
+
 app.post("/compile", (req, res) => {
   const inFilename = req.body.filename;
   const inFullPath = path.join(base_dir, inFilename);

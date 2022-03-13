@@ -2,13 +2,15 @@
   "name": "svc-compiler",
   "version": "1.0.0",
   "description": "Remote compiler for c++ programs",
-  "main": "compiler.ts",
+  "main": "src/compiler.ts",
   "repository": "git@github.com:Mr5he11/svc.git",
+  "author": "Stefano Sello <sellostefano@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "NODE_PATH=./build node build/index.js",
+    "start": "NODE_PATH=./dist node dist/compiler.js",
     "build": "tsc -p .",
+    "prod" : "yarn run build && yarn run start",
     "dev": "nodemon src/compiler.ts"
   },
   "dependencies": {
@@ -18,6 +20,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/node": "^17.0.21",
     "nodemon": "^2.0.15",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"

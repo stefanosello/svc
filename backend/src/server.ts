@@ -24,9 +24,12 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+app.get("/", (req, res) => {
+  res.status(200).send("<h1>Backend works!</h1>");
+});
 
-app.listen(4000, () => {
-  console.log(`server running on port 4000`);
+app.listen(80, () => {
+  console.log(`server running on port 8080`);
 
   doRequest('main.cpp');
   
