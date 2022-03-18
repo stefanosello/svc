@@ -1,0 +1,2 @@
+[] add .env configurations for PORTS, PASSWORDS etc
+[] better organization of code for queue management in server and compiler
