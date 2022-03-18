@@ -1,7 +1,8 @@
 version: '3.7'
 
 services:
-  # Frontend container configuration (vue.js)
+
+# ---------------[ Web Server Frontend service ]------------------
   frontend:
     build:
       context: ./frontend
@@ -18,7 +19,7 @@ services:
       - backend
     networks:
       - web-net
-  # Backend container configuration (node.js)
+# ---------------[ Web Server Backend service ]------------------
   backend:
     build:
       context: ./backend
@@ -37,7 +38,7 @@ services:
     networks:
       - web-net
       - compiler-net
-  # Compiler container configuration (node.js)
+# ---------------[ Compiler service ]------------------
   compiler:
     build:
       context: ./compiler
@@ -53,20 +54,25 @@ services:
     depends_on:
       - redis-smq
       - backend
-  # Redis container configuration (redis)
+# ---------------[ Queue service ]------------------
   redis-smq:
     image: 'redis:alpine'
     networks:
       - compiler-net
 
+
 volumes:
+# ---------------[ Shared Volume ]------------------
   compiler_node_modules:
   frontend_node_modules:
   backend_node_modules:
 
+
 networks:
+# ---------------[ Web Server Network ]------------------
   web-net:
     driver: bridge
+# ---------------[ Compiler Network ]------------------
   compiler-net:
     driver: bridge
     internal: true
