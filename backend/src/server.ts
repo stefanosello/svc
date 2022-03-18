@@ -5,9 +5,19 @@ import path from 'path';
 import fs from 'fs';
 import RedisSMQ from 'rsmq';
 import { randomUUID } from 'crypto';
+import { createServer } from "http";
+import { Server, Socket } from 'socket.io'
 
 const base_dir = "/src";
-const rsmq = new RedisSMQ( {host: "redis-smq", port: 6379, ns: "rsmq", realtime: true} );
+// redis queue instance
+const rsmq = new RedisSMQ( {host: "svc-smq", port: 6379, ns: "rsmq", realtime: true} );
+// web server
+const app = express();
+const httpServer = createServer(app);
+// socket server instance
+const io = new Server(httpServer);
+
+/* -------------- QUEUE METHODS -------------- */
 
 rsmq.createQueue({ qname: "myqueue" }, function (err, resp) {
   if (err) {
@@ -49,7 +59,24 @@ async function doRequest(filename: string) {
   });
 }
 
-const app = express();
+/* -------------- SOCKET METHODS -------------- */
+interface SocketObj { clientId: string, socket: Socket };
+const sockets: SocketObj[] = [];
+function addClientSocket(clientId: string, socket: Socket) {
+  if (!getClientSocket(clientId)) {
+    sockets.push({clientId, socket});
+  }
+}
+
+function getClientSocket(clientId: string): Socket|undefined {
+  const socketObj : SocketObj|undefined = sockets.find( e => e.clientId == clientId) || undefined;
+  if (socketObj) {
+    return socketObj.socket;
+  }
+  return undefined;
+}
+
+/* -------------- WEB SERVER METHODS -------------- */
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -89,6 +116,11 @@ app.post("/compilation-result", (req, res) => {
   console.log(req.body.data);
 });
 
-app.listen(8080, () => {
-  console.log(`[INFO] Server running on port 8080`);
+httpServer.listen(80, () => {
+  console.log(`[INFO] Server running on port 80`);
+
+  io.on("connection", (socket: any) => {
+    console.log("Accepted connection from client", socket.id);
+    addClientSocket(socket.id, socket);
+  });
 });
