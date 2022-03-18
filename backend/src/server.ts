@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser'
 import path from 'path';
 import fs from 'fs';
@@ -62,15 +63,19 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+app.use(cors({
+  origin: 'http://svc-frontend:8081',
+}));
+
 app.get("/", (req, res) => {
   res.status(200).send("<h1>Backend works!</h1>");
 });
 
 app.post("/compile", (req, res) => {
   const codeTxt = req.body.code;
-  console.log("GOT COMPILATION REQUEST");
+  console.log("[INFO] Got compilation request");
   const inFilename = createFile(codeTxt);
-  console.log("Created file ", inFilename);
+  console.log("[INFO] Created file to compile: ", inFilename);
   doRequest(inFilename);
 
 });
@@ -82,8 +87,10 @@ app.post("/compilation-result", (req, res) => {
 app.listen(80, () => {
   console.log(`[INFO] Server running on port 80`);
 
+  /*
   setTimeout( () => {
     doRequest('tests/fail.cpp');
     doRequest('tests/pass.cpp');
   }, 3000);
+  */
 });

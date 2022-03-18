@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'HelloWorld',
   props: {
@@ -23,18 +25,11 @@ export default {
     }
   },
   methods: {
-    compile() {
-      fetch('localhost:8080/compile', 
-        {  
-          method: 'POST',
-          data: {
-              code: this.code
-          }
-
-        }
-      ).then(response => {
-        console.log(response.body);
-      });
+    async compile() {
+      axios.defaults.baseURL = 'http://svc-backend:80';
+      axios.defaults.headers.common = {};
+      const res = await axios.post('/compile', { code: this.code  });
+      console.log(res);  
     }
   }
 }
