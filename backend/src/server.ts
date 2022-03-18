@@ -2,7 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser'
 import path from 'path';
 import fs from 'fs';
-import RedisSMQ from "rsmq";
+import RedisSMQ from 'rsmq';
+import { randomUUID } from 'crypto';
 
 const base_dir = "/src";
 const rsmq = new RedisSMQ( {host: "svc-smq", port: 6379, ns: "rsmq", realtime: true} );
@@ -17,6 +18,14 @@ rsmq.createQueue({ qname: "myqueue" }, function (err, resp) {
     console.log("queue created")
   }
 });
+
+function createFile(code: string): string {
+  const inFilename = `${randomUUID()}.cpp`;
+  const inPath = path.join(base_dir, inFilename);
+  fs.writeFileSync(inPath, code);
+
+  return inFilename
+}
 
 async function doRequest(filename: string) {
   const fullPath = path.join(base_dir, filename);
@@ -57,10 +66,17 @@ app.get("/", (req, res) => {
   res.status(200).send("<h1>Backend works!</h1>");
 });
 
+app.post("/compile", (req, res) => {
+  const codeTxt = req.body.code;
+  console.log("GOT COMPILATION REQUEST");
+  const inFilename = createFile(codeTxt);
+  console.log("Created file ", inFilename);
+  doRequest(inFilename);
+
+});
+
 app.post("/compilation-result", (req, res) => {
-
   console.log(req.body.data);
-
 });
 
 app.listen(80, () => {

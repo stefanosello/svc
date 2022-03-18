@@ -1,6 +1,22 @@
 version: '3.7'
 
 services:
+  frontend:
+    container_name: svc-frontend
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./frontend:/home/vue/app
+    expose:
+      - '8080'
+    ports:
+      - '8081:8080'
+    command: ["yarn", "run", "serve"]
+    depends_on:
+      - backend
+    networks:
+      - web-net
   backend:
     container_name: svc-backend
     build:
