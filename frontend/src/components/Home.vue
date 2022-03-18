@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+
+import { ApiService } from '../services/api.service'
 
 export default {
   name: 'HelloWorld',
@@ -25,11 +26,13 @@ export default {
     }
   },
   methods: {
-    async compile() {
-      axios.defaults.baseURL = 'http://svc-backend:80';
-      axios.defaults.headers.common = {};
-      const res = await axios.post('/compile', { code: this.code  });
-      console.log(res);  
+    compile() {
+      ApiService.post('/compile', 
+        { code: this.code }
+      )
+      .then(res => {
+        console.log(res);
+      });
     }
   }
 }

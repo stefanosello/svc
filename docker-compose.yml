@@ -1,6 +1,8 @@
 version: '3.7'
 
 services:
+
+# ---------------[ Web Server Frontend service ]------------------
   frontend:
     container_name: svc-frontend
     build:
@@ -17,6 +19,7 @@ services:
       - backend
     networks:
       - web-net
+# ---------------[ Web Server Backend service ]------------------
   backend:
     container_name: svc-backend
     build:
@@ -35,6 +38,7 @@ services:
     networks:
       - web-net
       - compiler-net
+# ---------------[ Compiler service ]------------------
   compiler:
     container_name: svc-compiler
     build:
@@ -51,24 +55,29 @@ services:
     depends_on:
       - redis-smq
       - backend
+# ---------------[ Queue service ]------------------
   redis-smq:
     container_name: svc-smq
     image: 'redis:alpine'
-#    expose:
-#      - '6379'
     networks:
       - compiler-net
 
+
 volumes:
+# ---------------[ Shared Volume ]------------------
   shared:
     driver: local
     driver_opts:
       type: none
       device: ./shared
 
+
 networks:
+# ---------------[ Web Server Network ]------------------
   web-net:
     driver: bridge
+
+# ---------------[ Compiler Network ]------------------
   compiler-net:
     driver: bridge
     internal: true
