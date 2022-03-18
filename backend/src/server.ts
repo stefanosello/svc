@@ -7,7 +7,7 @@ import RedisSMQ from 'rsmq';
 import { randomUUID } from 'crypto';
 
 const base_dir = "/src";
-const rsmq = new RedisSMQ( {host: "svc-smq", port: 6379, ns: "rsmq", realtime: true} );
+const rsmq = new RedisSMQ( {host: "redis-smq", port: 6379, ns: "rsmq", realtime: true} );
 
 rsmq.createQueue({ qname: "myqueue" }, function (err, resp) {
   if (err) {
@@ -47,12 +47,6 @@ async function doRequest(filename: string) {
   
     console.log("Message sent. ID:", resp);
   });
-  
-  /*
-  console.log(`[INFO] exit code: ${res.data.exitCode}`);
-  console.log(`[INFO] stdout:\n${res.data.stdout}`);
-  console.log(`[INFO] stderr:\n${res.data.stderr}`);
-  */
 }
 
 const app = express();
@@ -63,9 +57,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use(cors({
-  origin: 'http://svc-frontend:8081',
-}));
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.status(200).send("<h1>Backend works!</h1>");
@@ -77,15 +69,15 @@ app.post("/compile", (req, res) => {
   const inFilename = createFile(codeTxt);
   console.log("[INFO] Created file to compile: ", inFilename);
   doRequest(inFilename);
-
+  res.status(200).send("<h1>Compilation request sent!</h1>");
 });
 
 app.post("/compilation-result", (req, res) => {
   console.log(req.body.data);
 });
 
-app.listen(80, () => {
-  console.log(`[INFO] Server running on port 80`);
+app.listen(8080, () => {
+  console.log(`[INFO] Server running on port 8080`);
 
   /*
   setTimeout( () => {

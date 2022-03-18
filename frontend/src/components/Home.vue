@@ -1,5 +1,5 @@
 <template>
-  <div class="container d-flex flex-column align-items-center justify-content-center">
+  <div class="container h-100vh d-flex flex-column align-items-center justify-content-center">
     <h1> SVC </h1>
     <div class="w-100 my-5">
       <label for="codeInput" class="form-label">Write your c++ code here</label>
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     async compile() {
-      axios.defaults.baseURL = 'http://svc-backend:80';
+      axios.defaults.baseURL = 'http://localhost:8080';
       axios.defaults.headers.common = {};
       const res = await axios.post('/compile', { code: this.code  });
       console.log(res);  
@@ -34,3 +34,9 @@ export default {
   }
 }
 </script>
+
+<style lang="css" scoped>
+  .h-100vh {
+    height: 100vh;
+  }
+</style>

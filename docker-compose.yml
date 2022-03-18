@@ -1,13 +1,14 @@
 version: '3.7'
 
 services:
+  # Frontend container configuration (vue.js)
   frontend:
-    container_name: svc-frontend
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
     volumes:
       - ./frontend:/home/vue/app
+      - frontend_node_modules:/home/vue/app/node_modules
     expose:
       - '8080'
     ports:
@@ -17,54 +18,51 @@ services:
       - backend
     networks:
       - web-net
+  # Backend container configuration (node.js)
   backend:
-    container_name: svc-backend
     build:
       context: ./backend
       dockerfile: ./Dockerfile
     volumes:
       - ./backend:/home/node/app
       - ./shared:/src
+      - backend_node_modules:/home/vue/app/node_modules
     expose:
       - '8080'
     ports:
-      - '8080:80'
+      - '8080:8080'
     command: ["yarn", "run", "dev"]
     depends_on:
       - redis-smq
     networks:
       - web-net
       - compiler-net
+  # Compiler container configuration (node.js)
   compiler:
-    container_name: svc-compiler
     build:
       context: ./compiler
-      dockerfile: ./Dockerfile
-    expose:
-      - '1377'
+    env_file:
+      - ./compiler/.development.env
     volumes:
       - ./compiler:/home/node/app
       - ./shared:/src
+      - compiler_node_modules:/home/vue/app/node_modules
     command: ["yarn", "run", "dev"]
     networks:
       - compiler-net
     depends_on:
       - redis-smq
       - backend
+  # Redis container configuration (redis)
   redis-smq:
-    container_name: svc-smq
     image: 'redis:alpine'
-#    expose:
-#      - '6379'
     networks:
       - compiler-net
 
 volumes:
-  shared:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./shared
+  compiler_node_modules:
+  frontend_node_modules:
+  backend_node_modules:
 
 networks:
   web-net:
