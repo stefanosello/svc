@@ -10,17 +10,22 @@
   "scripts": {
     "start": "NODE_PATH=./dist node dist/compiler.js",
     "build": "tsc -p .",
-    "prod" : "yarn run build && yarn run start",
+    "prod": "yarn run build && yarn run start",
     "dev": "nodemon src/compiler.ts"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "body-parser": "^1.19.2",
     "express": "^4.17.3",
+    "rsmq": "^0.12.4",
+    "rsmq-worker": "^0.5.2",
     "shlex": "^2.1.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.21",
+    "@types/rsmq": "^0.8.4",
+    "@types/rsmq-worker": "^0.3.30",
     "nodemon": "^2.0.15",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
