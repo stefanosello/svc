@@ -7,7 +7,7 @@
         <p>STDERR: {{ stderr }}</p>
       </div>
       <label for="codeInput" class="form-label">Write your c++ code here</label>
-      <textarea class="form-control" v-model="code" id="codeInput" rows="6"></textarea>
+      <prism-editor class="my-editor" v-model="code" :highlight="highlight" line-numbers></prism-editor>
     </div>
     <div class="w-100 d-flex justify-content-end">
       <button class="btn btn-primary" @click="compile">Compile</button>
@@ -17,12 +17,19 @@
 
 <script>
 
-import ApiService from '../services/api.service'
+import ApiService from '../services/api.service';
 import socketService from '../services/socket.service';
+import { PrismEditor } from 'vue-prism-editor';
+import 'vue-prism-editor/dist/prismeditor.min.css';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/themes/prism-tomorrow.css';
 
 export default {
   name: 'HelloWorld',
-  props: {
+  components: {
+    PrismEditor,
   },
   data() {
     return {
@@ -33,6 +40,9 @@ export default {
     }
   },
   methods: {
+    highlight(code) {
+      return highlight(code, languages.clike);
+    },
     compile() {
       ApiService.post('/compile', 
         { code: this.code }
@@ -58,5 +68,22 @@ export default {
 <style lang="css" scoped>
   .h-100vh {
     height: 100vh;
+  }
+  /* required class */
+  .my-editor {
+    /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */
+    background: #2d2d2d;
+    color: #ccc;
+
+    /* you must provide font-family font-size line-height. Example: */
+    font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 5px;
+  }
+
+  /* optional class for removing the outline */
+  .prism-editor__textarea:focus {
+    outline: none;
   }
 </style>

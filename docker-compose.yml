@@ -9,7 +9,7 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - ./frontend:/home/vue/app
-      - frontend_node_modules:/home/vue/app/node_modules
+      - /home/vue/app/node_modules
     expose:
       - '8080'
     ports:
@@ -28,7 +28,7 @@ services:
     volumes:
       - ./backend:/home/node/app
       - ./shared:/src
-      - backend_node_modules:/home/vue/app/node_modules
+      - /home/node/app/node_modules
     ports:
       - "8080:80"
     command: ["yarn", "run", "dev"]
@@ -46,7 +46,7 @@ services:
     volumes:
       - ./compiler:/home/node/app
       - ./shared:/src
-      - compiler_node_modules:/home/vue/app/node_modules
+      - /home/node/app/node_modules
     command: ["yarn", "run", "dev"]
     networks:
       - compiler-net
@@ -60,16 +60,8 @@ services:
     networks:
       - compiler-net
 
-
-volumes:
-# ---------------[ Shared Volume ]------------------
-  compiler_node_modules:
-  frontend_node_modules:
-  backend_node_modules:
-
-
 networks:
-# ---------------[ Web Server Network ]------------------
+# ---------------[ Web Server Network ]----------------
   web-net:
     driver: bridge
 # ---------------[ Compiler Network ]------------------

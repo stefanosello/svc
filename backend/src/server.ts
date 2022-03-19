@@ -144,7 +144,6 @@ httpServer.listen(process.env.BACKEND_HTTP_PORT, () => {
   io.on("connection", (socket: Socket) => {
     console.log("Accepted connection from client", socket.id);
     addClientSocket(socket.id, socket);
-    socket.emit('user-connected', socket.id)
 
     socket.on('disconnect', () => {
       removeClientSocket(socket.id);
