@@ -20,6 +20,25 @@ MANDATORY_CONFIG_KEYS.forEach(key => {
   if (!process.env[key]) throw new Error(`Missing config key: ${key}`);
 });
 
+/* -------------- ORIGIN DEFINITION -------------- */
+// taken from
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/cors/index.d.ts
+const allowedOrigins: string[] = (process.env.NODE_ENV !== 'production') ? (process.env.BACKEND_ALLOWED_HOSTS || "").split(",") : [];
+const corsOpts: cors.CorsOptions = {
+    origin: (requestOrigin: string | undefined, callback: (err: Error | null, origin?: boolean | string | RegExp | (boolean | string | RegExp)[]) => void) => {
+      if (process.env.NODE_ENV !== 'production') {
+        return callback(null, true);
+      }
+      console.log(`[CORS] Received req by origin: ${requestOrigin}`);
+      if (requestOrigin && allowedOrigins && allowedOrigins.indexOf(requestOrigin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not Allowed by CORS'))
+      }
+
+    }
+};
+
 const baseDir = process.env.BACKEND_BASE_DIR || "";
 const rsmq = new RedisSMQ({
   host: process.env.BACKEND_QUEUE_HOST,
@@ -30,7 +49,7 @@ const rsmq = new RedisSMQ({
 const queueName = process.env.BACKEND_QUEUE_NAME || "";
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, { cors: corsOpts });
 
 /* -------------- QUEUE METHODS -------------- */
 
@@ -71,6 +90,13 @@ function addClientSocket(clientId: string, socket: Socket) {
   }
 }
 
+function removeClientSocket(clientId: string) {
+  const socketObj : SocketObj|undefined = sockets.find( e => e.clientId == clientId) || undefined;
+  if (socketObj) {
+    sockets.slice(sockets.indexOf(socketObj), 1);
+  }
+}
+
 function getClientSocket(clientId: string): Socket|undefined {
   const socketObj : SocketObj|undefined = sockets.find( e => e.clientId == clientId) || undefined;
   if (socketObj) {
@@ -83,23 +109,7 @@ function getClientSocket(clientId: string): Socket|undefined {
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-const allowedOrigins = (process.env.BACKEND_ALLOWED_HOSTS || "").split(",");
-if (process.env.NODE_ENV == "production") {
-  app.use(cors({
-    methods: 'POST',
-    optionsSuccessStatus: 200,
-    origin: (origin, cb) => {
-      console.log(`[CORS] Received req by origin: ${origin}`);
-      if (origin && allowedOrigins.indexOf(origin) !== -1) {
-        cb(null, true);
-      } else {
-        cb(new Error('Not Allowed by CORS'))
-      }
-    }
-  }));
-} else {
-  app.use(cors());
-}
+app.use(cors(corsOpts));
 
 app.get("/", (_, res) => {
   res.status(200).send("<h1>Backend works!</h1>");
@@ -122,8 +132,13 @@ app.post("/compilation-result", (req, res) => {
 httpServer.listen(process.env.BACKEND_HTTP_PORT, () => {
   console.log(`[INFO] Server running on port ${process.env.BACKEND_HTTP_PORT}`);
 
-  io.on("connection", (socket: any) => {
+  io.on("connection", (socket: Socket) => {
     console.log("Accepted connection from client", socket.id);
     addClientSocket(socket.id, socket);
+    socket.emit('user-connected', socket.id)
+
+    socket.on('disconnect', () => {
+      removeClientSocket(socket.id);
+    });
   });
 });

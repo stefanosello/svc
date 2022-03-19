@@ -14,6 +14,7 @@
 <script>
 
 import { ApiService } from '../services/api.service'
+import { SocketService } from '../services/socket.service'
 
 export default {
   name: 'HelloWorld',
@@ -34,6 +35,12 @@ export default {
         console.log(res);
       });
     }
+  },
+
+  mounted() {
+    SocketService.on('user-connected', (clientId) => {
+      console.log(clientId);
+    })
   }
 }
 </script>
