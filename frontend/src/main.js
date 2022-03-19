@@ -5,6 +5,6 @@ import App from './App.vue'
 
 import { ApiService } from './services/api.service'
 
-ApiService.init("http://localhost:8080")
+ApiService.init(`${process.env.VUE_APP_API_HOST}:${process.env.VUE_APP_API_PORT}/${process.env.VUE_APP_API_PATH}`)
 
 createApp(App).mount('#app')
