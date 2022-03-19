@@ -49,6 +49,7 @@ worker.on("message", ( msg: string, _: Function, id: string ) => {
   console.log(`[WORKER] Received message ${id}`);
   // parse message and compile
   const payload = JSON.parse(msg);
+  const clientId: string = payload.clientId;
   const inFilename: string = payload.filename;
   const inPath: string = path.join(baseDir || "", inFilename);
   const outFilename: string = `${inFilename}.out`;
@@ -57,9 +58,12 @@ worker.on("message", ( msg: string, _: Function, id: string ) => {
   console.log(`[COMPILER] Compilation terminated with status ${process.status}`);
   
   const data = {
-    exitCode: process.status,
-    stdout: process.stdout.toLocaleString(),
-    stderr: process.stderr.toLocaleString(),
+    clientId,
+    compilationResults: {
+      exitCode: process.status,
+      stdout: process.stdout.toLocaleString(),
+      stderr: process.stderr.toLocaleString(),
+    },
   };
   if (process.status === 0) rmFile(outPath);
   backendInstance

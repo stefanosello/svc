@@ -1,13 +1,24 @@
 import axios from 'axios';
 
-const ApiService = {
+class ApiService {
+    clientId;
+    constructor() {
+        this.clientId = undefined;
+     }
+
     init(baseUrl) {
         axios.defaults.baseURL = baseUrl;
-    },
+    }
+
+    updateClientId(clientId) {
+        if (clientId) {
+            this.clientId = clientId;
+        }
+    }
 
     post(path, data) {
-        return axios.post(path, data);
+        return axios.post(path, { ...data, clientId: this.clientId } );
     }
-};
+}
 
-export { ApiService }
+export default new ApiService();

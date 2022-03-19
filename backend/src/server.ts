@@ -69,11 +69,11 @@ function createFile(code: string): string {
   return inFilename
 } 
 
-async function doRequest(filename: string) {
+async function doRequest(filename: string, clientId: string) {
   const fullPath = path.join(baseDir, filename);
   if (!fs.existsSync(fullPath)) throw new Error("File does not exists!");
 
-  const payload = { filename: filename };
+  const payload = { filename, clientId };
   console.log("Sending request for", payload);
   rsmq.sendMessage({ qname: queueName, message: JSON.stringify(payload)}, (err, resp) => {
     if (err) { console.error(err); return 1; }
@@ -117,16 +117,25 @@ app.get("/", (_, res) => {
 
 app.post("/compile", (req, res) => {
   const codeTxt = req.body.code;
-  console.log("[INFO] Got compilation request", req.hostname);
+  const clientId = req.body.clientId;
+  console.log(`[INFO] Got compilation request from ${req.hostname}  - ${clientId}`);
   const inFilename = createFile(codeTxt);
-  console.log("[INFO] Created file to compile: ", inFilename);
-  doRequest(inFilename);
+  console.log(`[INFO] Created file to compile: ${inFilename}`);
+  doRequest(inFilename, clientId);
   res.status(200).send("OK!");
 });
 
 app.post("/compilation-result", (req, res) => {
   console.log("[INFO] Got compilation results");
   console.log(req.body.data);
+
+  const clientId: string = req.body.data.clientId;
+  if (clientId) {
+    const socket: Socket|undefined = getClientSocket(clientId);
+    if (socket) {
+      socket.emit("compilation-result", req.body.data.compilationResults);
+    }
+  }
 });
 
 httpServer.listen(process.env.BACKEND_HTTP_PORT, () => {

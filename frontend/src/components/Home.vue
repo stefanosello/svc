@@ -2,6 +2,10 @@
   <div class="container h-100vh d-flex flex-column align-items-center justify-content-center">
     <h1> SVC </h1>
     <div class="w-100 my-5">
+      <div v-if="compiled">
+        <p>STATUS: {{statusCode}}</p>
+        <p>STDERR: {{ stderr }}</p>
+      </div>
       <label for="codeInput" class="form-label">Write your c++ code here</label>
       <textarea class="form-control" v-model="code" id="codeInput" rows="6"></textarea>
     </div>
@@ -13,17 +17,19 @@
 
 <script>
 
-import { ApiService } from '../services/api.service'
-import { SocketService } from '../services/socket.service'
+import ApiService from '../services/api.service'
+import socketService from '../services/socket.service';
 
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
   },
   data() {
     return {
       code: '',
+      statusCode: '',
+      stderr: '',
+      compiled: false,
     }
   },
   methods: {
@@ -32,14 +38,18 @@ export default {
         { code: this.code }
       )
       .then(res => {
+        this.compiled = false;
         console.log(res);
       });
     }
   },
 
   mounted() {
-    SocketService.on('user-connected', (clientId) => {
-      console.log(clientId);
+    socketService.on("compilation-result", (results) => {
+      console.log(results);
+      this.statusCode = results.exitCode;
+      this.stderr = results.stderr;
+      this.compiled = true;
     })
   }
 }
