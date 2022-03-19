@@ -14,21 +14,20 @@ const MANDATORY_CONFIG_KEYS = [
   "COMPILER_QUEUE_NAME"
 ];
 MANDATORY_CONFIG_KEYS.forEach(key => {
-  if (!process.env[key]) {
-    throw new Error(`Missing config key: ${key}`);
-  }
+  if (!process.env[key]) throw new Error(`Missing config key: ${key}`);
 });
 
 const baseDir = process.env.COMPILER_BASE_DIR;
+const queueName = process.env.COMPILER_QUEUE_NAME || "";
 const options = {
   host: process.env.COMPILER_QUEUE_HOST,
   port: parseInt(process.env.COMPILER_QUEUE_PORT  || "")
 };
 
 const rsmq = new RedisSMQ( options );
-const worker = new RSMQWorker( "myqueue", { ...options, autostart: true } );
+const worker = new RSMQWorker(queueName, { ...options, autostart: true } );
 const backendInstance = axios.create({
-  baseURL: process.env.COMPILER_BACKEND_HOST
+  baseURL: `${process.env.COMPILER_BACKEND_HOST}:${process.env.COMPILER_BACKEND_PORT}/`
 })
 
 function compile(inPath: string, outPath: string) {
@@ -46,7 +45,7 @@ function rmFile(filePath: string) {
   fs.unlinkSync(filePath);
 }
 
-worker.on( "message", ( msg: string, next: Function, id: string ) => {  
+worker.on("message", ( msg: string, _: Function, id: string ) => {
   console.log(`[WORKER] Received message ${id}`);
   // parse message and compile
   const payload = JSON.parse(msg);
@@ -63,6 +62,8 @@ worker.on( "message", ( msg: string, next: Function, id: string ) => {
     stderr: process.stderr.toLocaleString(),
   };
   if (process.status === 0) rmFile(outPath);
-  backendInstance.post("/compilation-result", { data });
-  rsmq.deleteMessage({ qname: "myqueue", id }, (_) => {});
+  backendInstance
+    .post("/compilation-result", { data })
+    .catch(err => console.error(err));
+  rsmq.deleteMessage({ qname: queueName, id }, (_) => {});
 });

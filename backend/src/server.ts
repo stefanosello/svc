@@ -8,53 +8,56 @@ import { randomUUID } from 'crypto';
 import { createServer } from "http";
 import { Server, Socket } from 'socket.io'
 
-const base_dir = "/src";
-// redis queue instance
-const rsmq = new RedisSMQ( {host: "svc-smq", port: 6379, ns: "rsmq", realtime: true} );
-// web server
+const MANDATORY_CONFIG_KEYS = [
+  "BACKEND_BASE_DIR",
+  "BACKEND_QUEUE_NAME",
+  "BACKEND_QUEUE_HOST",
+  "BACKEND_QUEUE_PORT",
+  "BACKEND_ALLOWED_HOSTS",
+  "BACKEND_HTTP_PORT"
+];
+MANDATORY_CONFIG_KEYS.forEach(key => {
+  if (!process.env[key]) throw new Error(`Missing config key: ${key}`);
+});
+
+const baseDir = process.env.BACKEND_BASE_DIR || "";
+const rsmq = new RedisSMQ({
+  host: process.env.BACKEND_QUEUE_HOST,
+  port: parseInt(process.env.BACKEND_QUEUE_PORT || ""),
+  ns: "rsmq",
+  realtime: true
+});
+const queueName = process.env.BACKEND_QUEUE_NAME || "";
 const app = express();
 const httpServer = createServer(app);
-// socket server instance
 const io = new Server(httpServer);
 
 /* -------------- QUEUE METHODS -------------- */
 
-rsmq.createQueue({ qname: "myqueue" }, function (err, resp) {
+rsmq.createQueue({ qname: queueName }, (err, resp) => {
   if (err) {
-    console.error(err)
-    return
+    if (`${err}`.startsWith("queueExists")) { console.log("[QUEUE] Queue already exists"); }
+    else { console.error(err); }
+    return 1;
   }
-
-  if (resp === 1) {
-    console.log("queue created")
-  }
+  if (resp === 1) console.log("queue created");
 });
-
+ 
 function createFile(code: string): string {
   const inFilename = `${randomUUID()}.cpp`;
-  const inPath = path.join(base_dir, inFilename);
+  const inPath = path.join(baseDir, inFilename);
   fs.writeFileSync(inPath, code);
-
   return inFilename
-}
+} 
 
 async function doRequest(filename: string) {
-  const fullPath = path.join(base_dir, filename);
-  if (!fs.existsSync(fullPath)) {
-    throw new Error("File does not exists!");
-  }
+  const fullPath = path.join(baseDir, filename);
+  if (!fs.existsSync(fullPath)) throw new Error("File does not exists!");
 
-  const payload = {
-    filename: filename,
-  };
-
+  const payload = { filename: filename };
   console.log("Sending request for", payload);
-  rsmq.sendMessage({ qname: "myqueue", message: JSON.stringify(payload) }, function (err, resp) {
-    if (err) { 
-      console.error(err)
-      return
-    }
-  
+  rsmq.sendMessage({ qname: queueName, message: JSON.stringify(payload)}, (err, resp) => {
+    if (err) { console.error(err); return 1; }
     console.log("Message sent. ID:", resp);
   });
 }
@@ -78,27 +81,27 @@ function getClientSocket(clientId: string): Socket|undefined {
 
 /* -------------- WEB SERVER METHODS -------------- */
 
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
-
-// parse application/json
 app.use(bodyParser.json())
-
-const allowedOrigins = ['http://localhost:8081'];
-app.use(cors({
-  methods: 'POST',
-  optionsSuccessStatus: 200,
-  origin: (origin, cb) => {
-    console.log(`[CORS] Received req by origin: ${origin}`);
-    if (origin && allowedOrigins.indexOf(origin) !== -1) {
-      cb(null, true);
-    } else {
-      cb(new Error('Not Allowed by CORS'))
+const allowedOrigins = (process.env.BACKEND_ALLOWED_HOSTS || "").split(",");
+if (process.env.NODE_ENV == "production") {
+  app.use(cors({
+    methods: 'POST',
+    optionsSuccessStatus: 200,
+    origin: (origin, cb) => {
+      console.log(`[CORS] Received req by origin: ${origin}`);
+      if (origin && allowedOrigins.indexOf(origin) !== -1) {
+        cb(null, true);
+      } else {
+        cb(new Error('Not Allowed by CORS'))
+      }
     }
-  }
-}));
+  }));
+} else {
+  app.use(cors());
+}
 
-app.get("/", (req, res) => {
+app.get("/", (_, res) => {
   res.status(200).send("<h1>Backend works!</h1>");
 });
 
@@ -116,8 +119,8 @@ app.post("/compilation-result", (req, res) => {
   console.log(req.body.data);
 });
 
-httpServer.listen(80, () => {
-  console.log(`[INFO] Server running on port 80`);
+httpServer.listen(process.env.BACKEND_HTTP_PORT, () => {
+  console.log(`[INFO] Server running on port ${process.env.BACKEND_HTTP_PORT}`);
 
   io.on("connection", (socket: any) => {
     console.log("Accepted connection from client", socket.id);
