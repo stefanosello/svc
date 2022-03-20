@@ -1,16 +1,25 @@
 <template>
   <div class="container h-100vh d-flex flex-column align-items-center justify-content-center">
     <h1> SVC </h1>
+
     <div class="w-100 my-5">
-      <div v-if="compiled">
-        <p>STATUS: {{statusCode}}</p>
-        <p>STDERR: {{ stderr }}</p>
-      </div>
       <label for="codeInput" class="form-label">Write your c++ code here</label>
-      <prism-editor class="my-editor" v-model="code" :highlight="highlight" line-numbers></prism-editor>
+      <prism-editor id="codeInput" class="my-editor" v-model="code" :highlight="highlight" line-numbers></prism-editor>
     </div>
-    <div class="w-100 d-flex justify-content-end">
-      <button class="btn btn-primary" @click="compile">Compile</button>
+    <div class="w-100 d-flex justify-content-end input-group mb-3">
+      <input type="text" class="form-control" v-model="cflags" placeholder="Compilation flags">
+      <div class="input-group-append">
+        <button class="btn btn-secondary" @click="compile">Compile</button>
+      </div>
+    </div>
+
+    <div v-if="compiled" class="w-100 my-5">
+      <div v-bind:class="{ 'text-success': this.exitCode === 0, 'text-danger': this.exitCode !== 0,  }" >
+        {{ exitCodeDisplay }}
+      </div>
+      <div>
+        <pre>{{ stderr }}</pre>
+      </div>
     </div>
   </div>
 </template>
@@ -34,10 +43,20 @@ export default {
   data() {
     return {
       code: '',
-      statusCode: '',
+      exitCode: '',
       stderr: '',
       compiled: false,
+      cflags: ''
     }
+  },
+  computed: {
+    exitCodeDisplay: function() {
+      if (this.exitCode === 0) {
+        return 'Compilation Successful!'
+      } else {
+        return 'Complation Failed'
+      }
+    },
   },
   methods: {
     highlight(code) {
@@ -45,7 +64,10 @@ export default {
     },
     compile() {
       ApiService.post('/compile', 
-        { code: this.code }
+        { 
+          code: this.code, 
+          cflags: this.cflags
+        }
       )
       .then(res => {
         this.compiled = false;
@@ -57,7 +79,7 @@ export default {
   mounted() {
     socketService.on("compilation-result", (results) => {
       console.log(results);
-      this.statusCode = results.exitCode;
+      this.exitCode = results.exitCode;
       this.stderr = results.stderr;
       this.compiled = true;
     })

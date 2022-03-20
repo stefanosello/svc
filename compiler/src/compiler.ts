@@ -30,8 +30,8 @@ const backendInstance = axios.create({
   baseURL: `${process.env.COMPILER_BACKEND_HOST}:${process.env.COMPILER_BACKEND_PORT}/`
 })
 
-function compile(inPath: string, outPath: string) {
-  const cmdStr = `g++ -std=c++17 ${inPath} -o ${outPath}`;
+function compile(inPath: string, outPath: string, cflags: string) {
+  const cmdStr = `g++ ${cflags} ${inPath} -o ${outPath}`;
   const cmdShlexed: string[] = shlex.split(cmdStr) || [];
   const cmd = cmdShlexed.shift() || '';
   const args = cmdShlexed || [];
@@ -50,11 +50,12 @@ worker.on("message", ( msg: string, _: Function, id: string ) => {
   // parse message and compile
   const payload = JSON.parse(msg);
   const clientId: string = payload.clientId;
+  const cflags: string = payload.cflags || "";
   const inFilename: string = payload.inFilename;
   const inPath: string = path.join(baseDir || "", inFilename||"");
   const outFilename: string = `${inFilename}.out`;
   const outPath: string = path.join(baseDir || "", outFilename);
-  const process = compile(inPath, outPath);
+  const process = compile(inPath, outPath, cflags);
   console.log(`[COMPILER] Compilation terminated with status ${process.status}`);
   
   const data = {

@@ -73,19 +73,19 @@ function createFile(code: string): string {
   return inFilename
 } 
 
-async function doRequest(codeTxt: string, clientId: string): Promise<{ok: Boolean, msg: string|undefined}> {
+async function doRequest( opts: { codeTxt: string, cflags: string|undefined }, clientId: string): Promise<{ok: Boolean, msg: string|undefined}> {
   if (queueJobsCunter > queueMaxJobs) {
     console.error("[QUEUE] Max jobs reached!");
     return { ok: false, msg: 'Max jobs reached!' };
   }
   queueJobsCunter++;
 
-  const inFilename = createFile(codeTxt);
+  const inFilename = createFile(opts.codeTxt);
   const inPath = path.join(baseDir, inFilename);
   if (!fs.existsSync(inPath)) throw new Error("File does not exists!");
   console.log(`[INFO] Created file to compile: ${inPath}`);
   
-  const payload = { inFilename, clientId };
+  const payload = { inFilename, cflags: opts.cflags, clientId };
   rsmq.sendMessage({ qname: queueName, message: JSON.stringify(payload)}, (err, resp) => {
     if (err) { 
       console.error(`[QUEUE] ${err}`); 
@@ -132,9 +132,10 @@ app.get("/", (_, res) => {
 
 app.post("/compile", async (req, res) => {
   const codeTxt = req.body.code;
+  const cflags = req.body.cflags || undefined;
   const clientId = req.body.clientId;
   console.log(`[INFO] Got compilation request from ${req.hostname}  - ${clientId}`);
-  const queueRes = await doRequest(codeTxt, clientId);
+  const queueRes = await doRequest( { codeTxt, cflags }, clientId);
   if (queueRes.ok) {
     res.status(200).send("OK!");
   } else {
