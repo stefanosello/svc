@@ -52,14 +52,18 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, { cors: corsOpts });
 
 /* -------------- QUEUE METHODS -------------- */
-
+const queueMaxJobs: number = parseInt(process.env.BACKEND_QUEUE_MAXJOBS || "") || 0;
+let queueJobsCunter: number;
 rsmq.createQueue({ qname: queueName }, (err, resp) => {
   if (err) {
     if (`${err}`.startsWith("queueExists")) { console.log("[QUEUE] Queue already exists"); }
     else { console.error(err); }
     return 1;
   }
-  if (resp === 1) console.log("queue created");
+  if (resp === 1) {
+    queueJobsCunter = 0;
+    console.log(`[QUEUE] Queue '${queueName}' created. Max items: ${queueMaxJobs}`);
+  }
 });
  
 function createFile(code: string): string {
@@ -69,16 +73,27 @@ function createFile(code: string): string {
   return inFilename
 } 
 
-async function doRequest(filename: string, clientId: string) {
-  const fullPath = path.join(baseDir, filename);
-  if (!fs.existsSync(fullPath)) throw new Error("File does not exists!");
+async function doRequest(codeTxt: string, clientId: string): Promise<{ok: Boolean, msg: string|undefined}> {
+  if (queueJobsCunter > queueMaxJobs) {
+    console.error("[QUEUE] Max jobs reached!");
+    return { ok: false, msg: 'Max jobs reached!' };
+  }
+  queueJobsCunter++;
 
-  const payload = { filename, clientId };
-  console.log("Sending request for", payload);
+  const inFilename = createFile(codeTxt);
+  const inPath = path.join(baseDir, inFilename);
+  if (!fs.existsSync(inPath)) throw new Error("File does not exists!");
+  console.log(`[INFO] Created file to compile: ${inPath}`);
+  
+  const payload = { inFilename, clientId };
   rsmq.sendMessage({ qname: queueName, message: JSON.stringify(payload)}, (err, resp) => {
-    if (err) { console.error(err); return 1; }
-    console.log("Message sent. ID:", resp);
+    if (err) { 
+      console.error(`[QUEUE] ${err}`); 
+      return { ok: false, msg: err };
+    }
+    console.log("[QUEUE] Message sent with ID:", resp);
   });
+  return { ok: true, msg: undefined };
 }
 
 /* -------------- SOCKET METHODS -------------- */
@@ -115,17 +130,20 @@ app.get("/", (_, res) => {
   res.status(200).send("<h1>Backend works!</h1>");
 });
 
-app.post("/compile", (req, res) => {
+app.post("/compile", async (req, res) => {
   const codeTxt = req.body.code;
   const clientId = req.body.clientId;
   console.log(`[INFO] Got compilation request from ${req.hostname}  - ${clientId}`);
-  const inFilename = createFile(codeTxt);
-  console.log(`[INFO] Created file to compile: ${inFilename}`);
-  doRequest(inFilename, clientId);
-  res.status(200).send("OK!");
+  const queueRes = await doRequest(codeTxt, clientId);
+  if (queueRes.ok) {
+    res.status(200).send("OK!");
+  } else {
+    res.status(500).send(queueRes.msg)
+  }
 });
 
 app.post("/compilation-result", (req, res) => {
+  queueJobsCunter--;
   console.log("[INFO] Got compilation results");
   console.log(req.body.data);
 

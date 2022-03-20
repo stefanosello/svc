@@ -50,8 +50,8 @@ worker.on("message", ( msg: string, _: Function, id: string ) => {
   // parse message and compile
   const payload = JSON.parse(msg);
   const clientId: string = payload.clientId;
-  const inFilename: string = payload.filename;
-  const inPath: string = path.join(baseDir || "", inFilename);
+  const inFilename: string = payload.inFilename;
+  const inPath: string = path.join(baseDir || "", inFilename||"");
   const outFilename: string = `${inFilename}.out`;
   const outPath: string = path.join(baseDir || "", outFilename);
   const process = compile(inPath, outPath);
