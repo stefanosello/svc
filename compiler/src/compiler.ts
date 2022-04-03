@@ -69,6 +69,6 @@ worker.on("message", ( msg: string, _: Function, id: string ) => {
   if (process.status === 0) rmFile(outPath);
   backendInstance
     .post("/compilation-result", { data })
-    .catch(err => console.error(err));
+    .catch((err: any) => console.error(err));
   rsmq.deleteMessage({ qname: queueName, id }, (_) => {});
 });

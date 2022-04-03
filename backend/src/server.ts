@@ -1,171 +1,62 @@
 import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser'
-import path from 'path';
-import fs from 'fs';
-import RedisSMQ from 'rsmq';
-import { randomUUID } from 'crypto';
+import bodyParser from 'body-parser';
 import { createServer } from "http";
-import { Server, Socket } from 'socket.io'
+import { Socket } from 'socket.io';
 
-const MANDATORY_CONFIG_KEYS = [
-  "BACKEND_BASE_DIR",
-  "BACKEND_QUEUE_NAME",
-  "BACKEND_QUEUE_HOST",
-  "BACKEND_QUEUE_PORT",
-  "BACKEND_ALLOWED_HOSTS",
-  "BACKEND_HTTP_PORT"
-];
-MANDATORY_CONFIG_KEYS.forEach(key => {
-  if (!process.env[key]) throw new Error(`Missing config key: ${key}`);
-});
+import QueueHandler from './classes/queueHandler';
+import SocketHandler from './classes/socketHandler';
+import { checkEnv, corsConfig, corsOpts, queueName } from './utils/startupUtils';
+import { createFile } from './utils/filesystemUtils';
 
-/* -------------- ORIGIN DEFINITION -------------- */
-// taken from
-// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/cors/index.d.ts
-const allowedOrigins: string[] = (process.env.NODE_ENV !== 'production') ? (process.env.BACKEND_ALLOWED_HOSTS || "").split(",") : [];
-const corsOpts: cors.CorsOptions = {
-    origin: (requestOrigin: string | undefined, callback: (err: Error | null, origin?: boolean | string | RegExp | (boolean | string | RegExp)[]) => void) => {
-      if (process.env.NODE_ENV !== 'production') {
-        return callback(null, true);
-      }
-      console.log(`[CORS] Received req by origin: ${requestOrigin}`);
-      if (requestOrigin && allowedOrigins && allowedOrigins.indexOf(requestOrigin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not Allowed by CORS'))
-      }
-
-    }
-};
-
-const baseDir = process.env.BACKEND_BASE_DIR || "";
-const rsmq = new RedisSMQ({
-  host: process.env.BACKEND_QUEUE_HOST,
-  port: parseInt(process.env.BACKEND_QUEUE_PORT || ""),
-  ns: "rsmq",
-  realtime: true
-});
-const queueName = process.env.BACKEND_QUEUE_NAME || "";
+/* -------------- INITIALIZATION -------------- */
+checkEnv();
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer, { cors: corsOpts });
+const queueHandler = new QueueHandler();
+const ioHandler = new SocketHandler(httpServer, {origin: corsOpts.origin});
+queueHandler.createQueue(queueName);
 
-/* -------------- QUEUE METHODS -------------- */
-const queueMaxJobs: number = parseInt(process.env.BACKEND_QUEUE_MAXJOBS || "") || 0;
-let queueJobsCunter: number;
-rsmq.createQueue({ qname: queueName }, (err, resp) => {
-  if (err) {
-    if (`${err}`.startsWith("queueExists")) { console.log("[QUEUE] Queue already exists"); }
-    else { console.error(err); }
-    return 1;
-  }
-  if (resp === 1) {
-    queueJobsCunter = 0;
-    console.log(`[QUEUE] Queue '${queueName}' created. Max items: ${queueMaxJobs}`);
-  }
-});
- 
-function createFile(code: string): string {
-  const inFilename = `${randomUUID()}.cpp`;
-  const inPath = path.join(baseDir, inFilename);
-  fs.writeFileSync(inPath, code);
-  return inFilename
-} 
-
-async function doRequest( opts: { codeTxt: string, cflags: string|undefined }, clientId: string): Promise<{ok: Boolean, msg: string|undefined}> {
-  if (queueJobsCunter > queueMaxJobs) {
-    console.error("[QUEUE] Max jobs reached!");
-    return { ok: false, msg: 'Max jobs reached!' };
-  }
-  queueJobsCunter++;
-
-  const inFilename = createFile(opts.codeTxt);
-  const inPath = path.join(baseDir, inFilename);
-  if (!fs.existsSync(inPath)) throw new Error("File does not exists!");
-  console.log(`[INFO] Created file to compile: ${inPath}`);
-  
-  const payload = { inFilename, cflags: opts.cflags, clientId };
-  rsmq.sendMessage({ qname: queueName, message: JSON.stringify(payload)}, (err, resp) => {
-    if (err) { 
-      console.error(`[QUEUE] ${err}`); 
-      return { ok: false, msg: err };
-    }
-    console.log("[QUEUE] Message sent with ID:", resp);
-  });
-  return { ok: true, msg: undefined };
-}
-
-/* -------------- SOCKET METHODS -------------- */
-interface SocketObj { clientId: string, socket: Socket };
-const sockets: SocketObj[] = [];
-function addClientSocket(clientId: string, socket: Socket) {
-  if (!getClientSocket(clientId)) {
-    sockets.push({clientId, socket});
-  }
-}
-
-function removeClientSocket(clientId: string) {
-  const socketObj : SocketObj|undefined = sockets.find( e => e.clientId == clientId) || undefined;
-  if (socketObj) {
-    sockets.slice(sockets.indexOf(socketObj), 1);
-  }
-}
-
-function getClientSocket(clientId: string): Socket|undefined {
-  const socketObj : SocketObj|undefined = sockets.find( e => e.clientId == clientId) || undefined;
-  if (socketObj) {
-    return socketObj.socket;
-  }
-  return undefined;
-}
-
-/* -------------- WEB SERVER METHODS -------------- */
-
+/* -------------- WEB SERVER CONFIGURATION -------------- */
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(cors(corsOpts));
+app.use(corsConfig);
 
 app.get("/", (_, res) => {
-  res.status(200).send("<h1>Backend works!</h1>");
+  res.status(200).end();
 });
 
 app.post("/compile", async (req, res) => {
   const codeTxt = req.body.code;
   const cflags = req.body.cflags || undefined;
   const clientId = req.body.clientId;
-  console.log(`[INFO] Got compilation request from ${req.hostname}  - ${clientId}`);
-  const queueRes = await doRequest( { codeTxt, cflags }, clientId);
-  if (queueRes.ok) {
+  console.log(`[HTTP] Got compilation request from ${req.hostname}  - ${clientId}`);
+  const [_, inFilename] = createFile(codeTxt);
+  const payload = { inFilename, cflags, clientId };
+  const queueRes = await queueHandler.pushToQueue(queueName, JSON.stringify(payload));
+  if (queueRes) {
     res.status(200).send("OK!");
   } else {
-    res.status(500).send(queueRes.msg)
+    res.status(503).send("[QUEUE] Service unavailable");
   }
 });
 
 app.post("/compilation-result", (req, res) => {
-  queueJobsCunter--;
-  console.log("[INFO] Got compilation results");
-  console.log(req.body.data);
-
+  console.log("[HTTP] Got compilation results");
   const clientId: string = req.body.data.clientId;
-  if (clientId) {
-    const socket: Socket|undefined = getClientSocket(clientId);
-    if (socket) {
-      socket.emit("compilation-result", req.body.data.compilationResults);
-    }
-  }
+  ioHandler.emitToClient(clientId, "compilation-result", req.body.data.compilationResults);
+  res.status(200).send("OK!");
 });
 
 httpServer.listen(process.env.BACKEND_HTTP_PORT, () => {
-  console.log(`[INFO] Server running on port ${process.env.BACKEND_HTTP_PORT}`);
+  console.log(`[HTTP] Server running on port ${process.env.BACKEND_HTTP_PORT}`);
 
+  const io = ioHandler.getSocketInstance();
   io.on("connection", (socket: Socket) => {
-    console.log("Accepted connection from client", socket.id);
-    addClientSocket(socket.id, socket);
+    console.log("[SOCKET] Accepted connection from client", socket.id);
+    ioHandler.addClientSocket(socket.id, socket);
 
     socket.on('disconnect', () => {
-      removeClientSocket(socket.id);
+      ioHandler.removeClientSocket(socket.id);
     });
   });
 });
