@@ -1,9 +1,9 @@
 <template>
   <div class="container h-100vh">
-    <h1 class="d-flex my-4 justify-content-center align-items-center">SV<img class="icon" src="favicon.jpg"/></h1>
+    <h1 class="d-flex my-4 justify-content-center align-items-center shadow bg-body rounded py-3">SV<img class="icon" src="favicon.jpg"/></h1>
 
     <div class="d-flex flex-column align-items-center justify-content-center p-4 shadow bg-body rounded">
-      <div class="w-100 my-3">
+      <div class="w-100 mb-3">
         <label for="codeInput" class="form-label">Write your c++ code here</label>
         <prism-editor id="codeInput" class="my-editor rounded py-3" v-model="code" :highlight="highlight" line-numbers></prism-editor>
       </div>
@@ -16,7 +16,7 @@
         <div v-if="compilationInProgress" class="d-flex justify-content-center">
           <Preloader color="#6C757D" :scale="0.6"/>
         </div>
-        <div class="alert" :class="`alert-${this.exitCode ? 'danger' : 'success'}`" role="alert" v-if="!compilationInProgress && compiled">
+        <div class="alert mb-0" :class="`alert-${this.exitCode ? 'danger' : 'success'}`" role="alert" v-if="!compilationInProgress && compiled">
           <strong class="text-uppercase">
             {{ exitCodeDisplay }}
           </strong>

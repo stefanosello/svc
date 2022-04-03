@@ -9,6 +9,11 @@ services:
       dockerfile: ./Dockerfile
     volumes:
       - ./frontend:/home/vue/app
+      - /home/vue/app/node_modules
+      # node_modules need to be mounted as a separate volume because otherwise local (hosting environment) node_modules will be used
+      # and if the hosting environment is not the same as the one used to build the image, the node_modules can throw compatibility errors.
+      # also: if the local node_modules are empty, the node_modules builded during the image build will be overwritten by the empty local node_modules,
+      # since the local directory (./frontend) is mounted as a volume AFTER the build, overwriting everything in '/home/vue/app'.
     expose:
       - '8080'
     ports:
@@ -26,6 +31,7 @@ services:
       - ./backend/.development.env
     volumes:
       - ./backend:/home/node/app
+      - /home/node/app/node_modules
       - ./shared:/src
     ports:
       - "8080:80"
@@ -43,6 +49,7 @@ services:
       - ./compiler/.development.env
     volumes:
       - ./compiler:/home/node/app
+      - /home/node/app/node_modules
       - ./shared:/src
     command: ["yarn", "run", "dev"]
     networks:
