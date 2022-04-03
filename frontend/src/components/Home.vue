@@ -2,38 +2,28 @@
   <div class="container h-100vh">
     <h1 class="d-flex my-5 justify-content-center"> SVC </h1>
 
-    <div class="d-flex flex-column align-items-center justify-content-center">
+    <div class="d-flex flex-column align-items-center justify-content-center p-4 shadow bg-body rounded">
       <div class="w-100 my-3">
         <label for="codeInput" class="form-label">Write your c++ code here</label>
-        <prism-editor id="codeInput" class="my-editor" v-model="code" :highlight="highlight" line-numbers></prism-editor>
+        <prism-editor id="codeInput" class="my-editor rounded" v-model="code" :highlight="highlight" line-numbers></prism-editor>
       </div>
       <div class="w-100 d-flex justify-content-end input-group mb-3">
         <input type="text" class="form-control" v-model="cflags" placeholder="Compilation flags">
-        <div class="input-group-append">
-          <button class="btn btn-secondary" @click="compile">Compile</button>
-        </div>
+        <button class="btn btn-secondary" @click="compile">Compile</button>
       </div>
 
       <div class="w-100">
         <div v-if="compilationInProgress" class="d-flex justify-content-center">
-          <Preloader color="#6C757D" scale="0.6"/>
+          <Preloader color="#6C757D" :scale="0.6"/>
         </div>
-        <div v-if="!compilationInProgress && compiled">
-          <div
-            class="text-uppercase font-weight-bold"
-            v-bind:class="{ 
-              'text-success': this.exitCode === 0, 
-              'text-danger': this.exitCode !== 0,
-            }">
+        <div class="alert" :class="`alert-${this.exitCode ? 'danger' : 'success'}`" role="alert" v-if="!compilationInProgress && compiled">
+          <strong class="text-uppercase">
             {{ exitCodeDisplay }}
-          </div>
-          <div>
-            <pre>{{ errorDisplay }}</pre>
-          </div>
+          </strong>
+          <pre v-if="errorDisplay">{{ errorDisplay }}</pre>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -41,9 +31,9 @@
 
 import ApiService from '../services/api.service';
 import socketService from '../services/socket.service';
+import { highlight, languages } from 'prismjs/components/prism-core';
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
-import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism-tomorrow.css';
@@ -75,7 +65,7 @@ export default {
     },
     errorDisplay: function() {
       if (!this.stderr)
-        return ''
+        return '';
 
       const regex = /\/src\/([a-z0-9]*-?)*.cpp/gm;
       console.log(this.stderr.match(regex));
@@ -87,6 +77,8 @@ export default {
       return highlight(code, languages.clike);
     },
     compile() {
+      localStorage.setItem('cflags', this.cflags);
+      localStorage.setItem('code', this.code);
       ApiService.post('/compile', 
         { 
           code: this.code, 
@@ -98,9 +90,16 @@ export default {
         this.compilationInProgress = true;
         console.log(res);
       });
-    }
+    },
+    mayInitData() {
+      if (localStorage.getItem('code')) {
+        this.code = localStorage.getItem('code');
+      }
+      if (localStorage.getItem('cflags')) {
+        this.cflags = localStorage.getItem('cflags');
+      }
+    },
   },
-
   mounted() {
     socketService.on("compilation-result", (results) => {
       //console.log(results);
@@ -109,15 +108,21 @@ export default {
       this.exitCode = results.exitCode;
       this.stderr = results.stderr;
       this.compiled = true;
-    })
+    });
+    this.mayInitData();
   }
 }
 </script>
 
 <style lang="css">
+  body {
+    background-color: #f4f4f4 !important;
+  }
+
   .h-100vh {
     height: 100vh;
   }
+
   /* required class */
   .my-editor {
     /* we dont use `language-` classes anymore so thats why we need to add background and text color manually */

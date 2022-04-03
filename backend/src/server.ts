@@ -5,15 +5,15 @@ import { Socket } from 'socket.io';
 
 import QueueHandler from './classes/queueHandler';
 import SocketHandler from './classes/socketHandler';
-import { checkEnv, corsConfig, corsOpts, queueName } from './utils/startupUtils';
 import { createFile } from './utils/filesystemUtils';
+import { checkEnv, corsConfig, corsOpts, queueName } from './utils/startupUtils';
 
 /* -------------- INITIALIZATION -------------- */
 checkEnv();
 const app = express();
 const httpServer = createServer(app);
 const queueHandler = new QueueHandler();
-const ioHandler = new SocketHandler(httpServer, {origin: corsOpts.origin});
+const ioHandler = new SocketHandler(httpServer, {cors: corsOpts});
 queueHandler.createQueue(queueName);
 
 /* -------------- WEB SERVER CONFIGURATION -------------- */
