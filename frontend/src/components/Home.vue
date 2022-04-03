@@ -1,11 +1,11 @@
 <template>
   <div class="container h-100vh">
-    <h1 class="d-flex my-5 justify-content-center"> SVC </h1>
+    <h1 class="d-flex my-4 justify-content-center align-items-center">SV<img class="icon" src="favicon.jpg"/></h1>
 
     <div class="d-flex flex-column align-items-center justify-content-center p-4 shadow bg-body rounded">
       <div class="w-100 my-3">
         <label for="codeInput" class="form-label">Write your c++ code here</label>
-        <prism-editor id="codeInput" class="my-editor rounded" v-model="code" :highlight="highlight" line-numbers></prism-editor>
+        <prism-editor id="codeInput" class="my-editor rounded py-3" v-model="code" :highlight="highlight" line-numbers></prism-editor>
       </div>
       <div class="w-100 d-flex justify-content-end input-group mb-3">
         <input type="text" class="form-control" v-model="cflags" placeholder="Compilation flags">
@@ -146,6 +146,11 @@ export default {
 
   .prism-editor__container {
     height: 100% !important;
+  }
+
+  .icon {
+    width: 2.5rem;
+    height: 2.5rem;
   }
 
 </style>
