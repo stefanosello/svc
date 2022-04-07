@@ -68,7 +68,6 @@ export default {
         return '';
 
       const regex = /\/src\/([a-z0-9]*-?)*.cpp/gm;
-      console.log(this.stderr.match(regex));
       return this.stderr.replaceAll(regex, '(INPUT)')
     }
   },
@@ -88,7 +87,6 @@ export default {
       .then(res => {
         this.compiled = false;
         this.compilationInProgress = true;
-        console.log(res);
       });
     },
     mayInitData() {
@@ -102,7 +100,6 @@ export default {
   },
   mounted() {
     socketService.on("compilation-result", (results) => {
-      //console.log(results);
       this.compilationInProgress = false;
 
       this.exitCode = results.exitCode;
