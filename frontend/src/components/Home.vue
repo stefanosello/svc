@@ -84,9 +84,10 @@ export default {
           cflags: this.cflags
         }
       )
-      .then(res => {
+      .then((res) => {
         this.compiled = false;
         this.compilationInProgress = true;
+        return res;
       });
     },
     mayInitData() {
