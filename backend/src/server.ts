@@ -5,7 +5,7 @@ import { Socket } from 'socket.io';
 
 import QueueHandler from './classes/queueHandler';
 import SocketHandler from './classes/socketHandler';
-import { createFile } from './utils/filesystemUtils';
+import { createFile, removeFile } from './utils/filesystemUtils';
 import { checkEnv, corsConfig, corsOpts, queueName } from './utils/startupUtils';
 
 /* -------------- INITIALIZATION -------------- */
@@ -42,6 +42,9 @@ app.post("/compile", async (req, res) => {
 
 app.post("/compilation-result", (req, res) => {
   console.log("[HTTP] Got compilation results");
+  const inFilename: string = req.body.data.inFilename;
+  removeFile(inFilename);
+  delete req.body.data.inFilename;
   const clientId: string = req.body.data.clientId;
   ioHandler.emitToClient(clientId, "compilation-result", req.body.data.compilationResults);
   res.status(200).send("OK!");

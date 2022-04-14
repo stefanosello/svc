@@ -60,6 +60,7 @@ worker.on("message", ( msg: string, _: Function, id: string ) => {
   
   const data = {
     clientId,
+    inFilename,
     compilationResults: {
       exitCode: process.status,
       stdout: process.stdout.toLocaleString(),
