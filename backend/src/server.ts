@@ -29,13 +29,17 @@ app.post("/compile", async (req, res) => {
   const codeTxt = req.body.code;
   const cflags = req.body.cflags || undefined;
   const clientId = req.body.clientId;
-  console.log(`[HTTP] Got compilation request from ${req.hostname}  - ${clientId}`);
   const [_, inFilename] = createFile(codeTxt);
+  console.log(`[HTTP] Got compilation request from ${req.hostname}  - ${clientId} - ${inFilename}`);
   const payload = { inFilename, cflags, clientId };
-  const queueRes = await queueHandler.pushToQueue(queueName, JSON.stringify(payload));
-  if (queueRes) {
-    res.status(200).send("OK!");
-  } else {
+  try {
+    const queueRes = await queueHandler.pushToQueue(queueName, JSON.stringify(payload));
+    if (queueRes) {
+      res.status(200).send("OK!");
+    } else {
+      res.status(503).send("[QUEUE] Service unavailable");
+    }
+  } catch (err: any) {
     res.status(503).send("[QUEUE] Service unavailable");
   }
 });
@@ -44,7 +48,10 @@ app.post("/compilation-result", (req, res) => {
   console.log("[HTTP] Got compilation results");
   const inFilename: string = req.body.data.inFilename;
   removeFile(inFilename);
-  delete req.body.data.inFilename;
+  const outFilename: string = req.body.data.outFilename;
+  removeFile(outFilename);
+  delete req.body.data.outFilename;
+  //queueHandler.decrement();
   const clientId: string = req.body.data.clientId;
   ioHandler.emitToClient(clientId, "compilation-result", req.body.data.compilationResults);
   res.status(200).send("OK!");

@@ -26,7 +26,7 @@
   duration -->
    <arrivalphase phase="1" duration="2" unit="minute">
 
-    <users interarrival="2" unit="second"></users>
+    <users interarrival="0.5" unit="second"></users>
 
     <!-- Let's stress the system:
       we know from previous run that the service mean time (μ) is 6.90 msec ie 0.007 sec. 

@@ -1,2 +1,5 @@
 [x] add .env configurations for PORTS, PASSWORDS etc
-[] better organization of code for queue management in server and compiler
+[x] better organization of code for queue management in server and compiler
+[] Tests cases: 
+    {max_jobs -> 50, duration -> 2m, interarrival -> 2s} -> analysis/results/20220421-1658
+    {max_jobs -> 50, duration -> 2m, interarrival -> 0.5s} -> blocking
