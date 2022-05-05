@@ -23,16 +23,23 @@ export default class JobQueue {
   private cb: Function;
   private jobs: Job[];
 
+  private maxActiveJobs: number;
+
   constructor(maxJobs: number, cb: Function) {
     this.maxJobs = maxJobs;
     this.activeJobs = 0;
     this.jobs = [];
     this.cb = cb;
+
+    this.maxActiveJobs = 0;
   }
 
   public async execute(job: Job) {
     if (this.activeJobs < this.maxJobs) {
       this.activeJobs += 1;
+      if (this.activeJobs > this.maxActiveJobs) {
+        this.maxActiveJobs = this.activeJobs;
+      }
       console.log(`[COMPILER] Active jobs: ${this.activeJobs}`)
       const procOutput: ProcessOutput = await this.cb(job);
       
@@ -64,6 +71,10 @@ export default class JobQueue {
 
   public getActiveJobs(): number {
     return this.activeJobs;
+  }
+
+  public getMaxActiveJobs(): number {
+    return this.maxActiveJobs;
   }
 
   private enqueue(job: Job) {

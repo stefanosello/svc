@@ -32,8 +32,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(corsConfig);
 
-app.get("/", (_, res) => {
-  res.status(200).send("BACKEND WORKS");
+app.get("/", async (_, res) => {
+  const maxActiveJobsResult: any = await compilerInstance.get('/peekMaxActiveJobs');
+
+  res.status(200).send(`BACKEND WORKS. </br> Compiler max jobs ${maxActiveJobsResult.data.maxActiveJobs}`);
 });
 
 app.post("/compile", async (req, res) => {
