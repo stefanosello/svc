@@ -64,19 +64,24 @@ async function compile(job: Job): Promise<ProcessOutput> {
 }
 
 app.post('/compile', (req, res) => {
-    const cflags: string = req.body.cflags || "";
-    const inFilename: string = req.body.inFilename;
-    const inPath: string = path.join(baseDir || "", inFilename||"");
-    const outFilename: string = `${inFilename}.out`;
-    const outPath: string = path.join(baseDir || "", outFilename);
-    const job: Job = {
-        inPath,
-        outPath,
-        cflags,
-        res
-    }
-    jobQueue.execute(job);
+  const cflags: string = req.body.cflags || "";
+  const inFilename: string = req.body.inFilename;
+  const inPath: string = path.join(baseDir || "", inFilename||"");
+  const outFilename: string = `${inFilename}.out`;
+  const outPath: string = path.join(baseDir || "", outFilename);
+  const job: Job = {
+      inPath,
+      outPath,
+      cflags,
+      res
+  }
+  jobQueue.execute(job);
 })
+
+app.get('/peekMaxActiveJobs', (req, res) => {
+  const maxActiveJobs: number = jobQueue.getMaxActiveJobs();
+  res.status(200).send( { maxActiveJobs } );
+});
 
 app.listen(PORT, () => {
   console.log(`Compiler listening on port ${PORT}`);
