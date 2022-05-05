@@ -33,8 +33,10 @@ services:
       - ./backend:/home/node/app
       - /home/node/app/node_modules
       - ./shared:/src
+    expose:
+      - '8080'
     ports:
-      - "8080:8080"
+      - '8080:8080'
     command: ["yarn", "run", "dev"]
 
 # ---------------[ Compiler service ]------------------
@@ -48,7 +50,7 @@ services:
       - /home/node/app/node_modules
       - ./shared:/src
     ports:
-      - "8082:8082"
+      - '8082:8082'
     command: ["yarn", "run", "dev"]
     depends_on:
       - backend

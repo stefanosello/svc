@@ -9,13 +9,13 @@ const MANDATORY_CONFIG_KEYS = [
 ];
 
 // taken from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/cors/index.d.ts
-const allowedOrigins: string[] = (process.env.NODE_ENV === 'production') ? (process.env.BACKEND_ALLOWED_HOSTS || "").split(",") : [];
+const allowedOrigins: string[] = (process.env.BACKEND_ALLOWED_HOSTS || "").split(",");
 
 export const corsOpts: cors.CorsOptions = {
   origin: (requestOrigin: string | undefined, callback: (err: Error | null, origin?: boolean | string | RegExp | (boolean | string | RegExp)[]) => void) => {
     if (process.env.NODE_ENV !== 'production') return callback(null, true);
     console.log(`[CORS] Received req by origin: ${requestOrigin}, allowed origins: ${allowedOrigins}`);
-    if (requestOrigin && allowedOrigins.indexOf(requestOrigin) > -1) callback(null, true);
+    if (!requestOrigin || allowedOrigins.indexOf(requestOrigin) > -1) callback(null, true);
     else callback(new Error('Not Allowed by CORS'));
   }
 };
@@ -27,5 +27,3 @@ export const checkEnv = () => {
     if (!process.env[key]) throw new Error(`Missing config key: ${key}`);
   });
 }
-
-export const queueName = process.env.BACKEND_QUEUE_NAME || "";
