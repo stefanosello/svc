@@ -3,8 +3,7 @@ import express, { Response } from 'express';
 import bodyParser from 'body-parser';
 
 import { createFile, removeFile } from './utils/filesystemUtils';
-import { checkEnv, corsConfig, corsOpts, queueName } from './utils/startupUtils';
-import cors from 'cors';
+import { checkEnv, corsConfig } from './utils/startupUtils';
 
 /* -------------- INITIALIZATION -------------- */
 checkEnv();
@@ -31,10 +30,10 @@ interface CompilationResult {
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(cors({origin: true}));
+app.use(corsConfig);
 
 app.get("/", (_, res) => {
-  res.status(200).end();
+  res.status(200).send("BACKEND WORKS");
 });
 
 app.post("/compile", async (req, res) => {

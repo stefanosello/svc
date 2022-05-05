@@ -6,7 +6,8 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ./Dockerfile
+    env_file:
+      - ./frontend/.env.local
     volumes:
       - ./frontend:/home/vue/app
       - /home/vue/app/node_modules
@@ -15,14 +16,13 @@ services:
       # also: if the local node_modules are empty, the node_modules builded during the image build will be overwritten by the empty local node_modules,
       # since the local directory (./frontend) is mounted as a volume AFTER the build, overwriting everything in '/home/vue/app'.
     expose:
-      - '8080'
+      - '8081'
     ports:
-      - '8081:8080'
-    command: ["yarn", "run", "serve"]
+      - '8081:8081'
+    command: ["yarn", "run", "serve", "--port", "8081"]
     depends_on:
       - backend
-    networks:
-      - web-net
+
 # ---------------[ Web Server Backend service ]------------------
   backend:
     build:
@@ -34,11 +34,9 @@ services:
       - /home/node/app/node_modules
       - ./shared:/src
     ports:
-      - "8080:80"
+      - "8080:8080"
     command: ["yarn", "run", "dev"]
-    networks:
-      - web-net
-      - compiler-net
+
 # ---------------[ Compiler service ]------------------
   compiler:
     build:
@@ -50,18 +48,7 @@ services:
       - /home/node/app/node_modules
       - ./shared:/src
     ports:
-      - "8082:82"
+      - "8082:8082"
     command: ["yarn", "run", "dev"]
-    networks:
-      - compiler-net
     depends_on:
       - backend
-
-networks:
-# ---------------[ Web Server Network ]----------------
-  web-net:
-    driver: bridge
-# ---------------[ Compiler Network ]------------------
-  compiler-net:
-    driver: bridge
-    internal: true

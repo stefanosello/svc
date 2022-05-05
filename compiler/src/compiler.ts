@@ -64,7 +64,6 @@ async function compile(job: Job): Promise<ProcessOutput> {
 }
 
 app.post('/compile', (req, res) => {
-    const fileName = req.body.inFilename;
     const cflags: string = req.body.cflags || "";
     const inFilename: string = req.body.inFilename;
     const inPath: string = path.join(baseDir || "", inFilename||"");
