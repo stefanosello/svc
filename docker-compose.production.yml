@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+
+# ---------------[ Web Server Frontend service ]------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.production
+    env_file:
+      - ./frontend/.env.production
+    expose:
+      - '80'
+    ports:
+      - '80:80'
+    command: ["http-server", "./dist", "-p", "80"]
+    depends_on:
+      - backend
+
+# ---------------[ Web Server Backend service ]------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.production
+    env_file:
+      - ./backend/.production.env
+    volumes:
+      - ./shared:/src
+    ports:
+      - "8080:8080"
+    command: ["yarn", "run", "start"]
+
+# ---------------[ Compiler service ]------------------
+  compiler:
+    build:
+      context: ./compiler
+      dockerfile: Dockerfile.production
+    env_file:
+      - ./compiler/.production.env
+    volumes:
+      - ./shared:/src
+    ports:
+      - "8082:8082"
+    command: ["yarn", "run", "start"]
+    depends_on:
+      - backend
