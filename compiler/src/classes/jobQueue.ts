@@ -33,9 +33,10 @@ export default class JobQueue {
   public async execute(job: Job) {
     if (this.activeJobs < this.maxJobs) {
       this.activeJobs += 1;
+      console.log(`[COMPILER] Active jobs: ${this.activeJobs}`)
       const procOutput: ProcessOutput = await this.cb(job);
       
-      this.activeJobs --;
+      this.activeJobs -= 1;
       this.executePendingJob()
       const responseBody: CompilationResult = {
         procOutput,
