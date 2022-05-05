@@ -35,7 +35,7 @@ app.use(corsConfig);
 app.get("/", async (_, res) => {
   const maxActiveJobsResult: any = await compilerInstance.get('/peekMaxActiveJobs');
 
-  res.status(200).send(`BACKEND WORKS. </br> Compiler max jobs ${maxActiveJobsResult.data.maxActiveJobs}`);
+  res.status(200).send(`<h1>SVC BACKEND</h1></br> Compiler max jobs: ${maxActiveJobsResult.data.maxActiveJobs}`);
 });
 
 app.post("/compile", async (req, res) => {
