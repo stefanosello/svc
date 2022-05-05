@@ -1,133 +1,88 @@
-import { spawnSync } from 'child_process';
-import shlex from 'shlex';
+import cors from 'cors';
 import path from 'path';
-import fs from 'fs';
-import RSMQWorker from "rsmq-worker";
-import RedisSMQ from "rsmq";
-import axios from 'axios';
-import cluster from 'cluster';
-import { cpus } from 'os';
-//import redis from 'redis';
-const redis = require('redis');
+import express from 'express';
+import bodyParser from 'body-parser';
+
+import JobQueue, { Job, ProcessOutput } from './classes/jobQueue';
+import { spawn } from 'child_process';
+import shlex from 'shlex';
+
+const app = express();
+
 
 const MANDATORY_CONFIG_KEYS = [
-  "COMPILER_BASE_DIR",
-  "COMPILER_BACKEND_HOST",
-  "COMPILER_BACKEND_PORT",
-  "COMPILER_QUEUE_HOST",
-  "COMPILER_QUEUE_PORT",
-  "COMPILER_QUEUE_MAXJOBS",
-  "COMPILER_QUEUE_NAME"
+    "COMPILER_PORT",
+    "COMPILER_BASE_DIR",
+    "COMPILER_QUEUE_MAXJOBS",
 ];
 MANDATORY_CONFIG_KEYS.forEach(key => {
   if (!process.env[key]) throw new Error(`Missing config key: ${key}`);
 });
- 
 const baseDir = process.env.COMPILER_BASE_DIR;
-const queueName = process.env.COMPILER_QUEUE_NAME || "";
-const queueMaxJobs = parseInt(process.env.COMPILER_QUEUE_MAXJOBS || "") || 0;
-let activeJobsNumber = 0;
-const options = {
-  host: process.env.COMPILER_QUEUE_HOST,
-  port: parseInt(process.env.COMPILER_QUEUE_PORT  || "")
-};
+const PORT = process.env.COMPILER_PORT;
 
-const rsmq = new RedisSMQ( options );
-//const worker = new RSMQWorker(queueName, { ...options, autostart: true } );
-const backendInstance = axios.create({
-  baseURL: `${process.env.COMPILER_BACKEND_HOST}:${process.env.COMPILER_BACKEND_PORT}/`
-})
+/* -------------- WEB SERVER CONFIGURATION -------------- */
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(cors());
 
-function compile(inPath: string, outPath: string, cflags: string) {
-  const cmdStr = `g++ ${cflags} ${inPath} -o ${outPath}`;
+/* -------------- QUEUE CONFIGURATION -------------- */
+
+const QUEUE_MAX_JOBS = parseInt(process.env.COMPILER_QUEUE_MAXJOBS || "") || 0;
+let jobQueue: JobQueue;
+
+
+async function compile(job: Job): Promise<ProcessOutput> {
+
+  // TODO change to spawnSync?
+  async function spawnChild(cmd: string, args: string[]): Promise<ProcessOutput> {
+    const child = spawn(cmd, args);
+  
+    let stdout = "";
+    for await (const chunk of child.stdout) {
+        //console.log('stdout chunk: '+chunk);
+        stdout += chunk;
+    }
+    let stderr = "";
+    for await (const chunk of child.stderr) {
+        //console.error('stderr chunk: '+chunk);
+        stderr += chunk;
+    }
+    const exitCode: number = await new Promise( (resolve, reject) => {
+        child.on('close', resolve);
+    });
+    
+    return { stdout, stderr, exitCode };
+  }
+
+  const cmdStr = `g++ ${job.cflags} ${job.inPath} -o ${job.outPath}`;
   const cmdShlexed: string[] = shlex.split(cmdStr) || [];
   const cmd = cmdShlexed.shift() || '';
   const args = cmdShlexed || [];
   
-  //console.log(`[COMPILER] Executing: ${cmd} ${args.join(" ")}`);
-  return spawnSync(cmd, args);
+  return spawnChild(cmd, args);
 }
 
-function rmFile(filePath: string) { 
-  //console.log("[COMPILER] Removing file: ", filePath);
-  fs.unlinkSync(filePath);
-}
-
-function processMessage(msg: string, id: string) {
-  // parse message and compile
-  const payload = JSON.parse(msg);
-  const clientId: string = payload.clientId;
-  const cflags: string = payload.cflags || "";
-  const inFilename: string = payload.inFilename;
-  const inPath: string = path.join(baseDir || "", inFilename||"");
-  const outFilename: string = `${inFilename}.out`;
-  const outPath: string = path.join(baseDir || "", outFilename);
-  const process = compile(inPath, outPath, cflags);
-  console.log(`[COMPILER] Compilation terminated with status ${process.status}`);
-  
-  const data = {
-    clientId,
-    inFilename,
-    outFilename,
-    compilationResults: {
-      exitCode: process.status,
-      stdout: process.stdout.toLocaleString(),
-      stderr: process.stderr.toLocaleString(),
-    },
-  };
-  backendInstance
-    .post("/compilation-result", { data })
-    .catch((err: any) => console.error(err));
-  rsmq.deleteMessage({ qname: queueName, id }, (_) => {});
-}
-
-(() => {
-  const client = redis.createClient({
-    url: 'redis://redis-smq:6379'
-  });
-
-  const subscriber = client.duplicate();
-
-  subscriber.on('connect', ()=> {
-
-    subscriber.subscribe(`rsmq:rt:${queueName}`);
-
-    const numCpus = cpus().length;
-
-    if (cluster.isPrimary) {
-
-      for (let i = 0; i<numCpus; i++) {
-        cluster.fork();
-      }
-
-      cluster.on('exit', (worker, code, signal) => {
-        console.log(`worker ${worker.process.pid} died`);
-      });
-
-    } else {
-      subscriber.on('message', (message: any) => {
-        //console.log(message)
-        rsmq.receiveMessage({qname: queueName}, ( err: any, payload: any ) => {
-          //console.log(err, payload.message)
-          if (payload) {
-            //console.log(`[WORKER] Received message ${payload.id}`);
-            if (queueMaxJobs > activeJobsNumber) {
-              activeJobsNumber++;
-              console.log(activeJobsNumber);
-          
-              setTimeout( () => processMessage(payload.message, payload.id), 100);
-              
-              activeJobsNumber--;
-            } else {
-              console.log(`[WORKER] Queue busy`)
-            }
-          }
-        
-        });
-      });
+app.post('/compile', (req, res) => {
+    const fileName = req.body.inFilename;
+    const cflags: string = req.body.cflags || "";
+    const inFilename: string = req.body.inFilename;
+    const inPath: string = path.join(baseDir || "", inFilename||"");
+    const outFilename: string = `${inFilename}.out`;
+    const outPath: string = path.join(baseDir || "", outFilename);
+    const job: Job = {
+        inPath,
+        outPath,
+        cflags,
+        res
     }
+    jobQueue.execute(job);
+})
 
+app.listen(PORT, () => {
+  console.log(`Compiler listening on port ${PORT}`);
+
+  jobQueue = new JobQueue(QUEUE_MAX_JOBS, (job: Job): Promise<ProcessOutput> => {
+    return compile(job);
   });
-
-})();
-
+})

@@ -36,8 +36,6 @@ services:
     ports:
       - "8080:80"
     command: ["yarn", "run", "dev"]
-    depends_on:
-      - redis-smq
     networks:
       - web-net
       - compiler-net
@@ -51,18 +49,13 @@ services:
       - ./compiler:/home/node/app
       - /home/node/app/node_modules
       - ./shared:/src
+    ports:
+      - "8082:82"
     command: ["yarn", "run", "dev"]
     networks:
       - compiler-net
     depends_on:
-      - redis-smq
       - backend
-# ---------------[ Queue service ]------------------
-  redis-smq:
-    image: 'redis:alpine'
-    container_name: 'redis-smq'
-    networks:
-      - compiler-net
 
 networks:
 # ---------------[ Web Server Network ]----------------

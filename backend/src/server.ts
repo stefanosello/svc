@@ -1,25 +1,37 @@
-import express from 'express';
+import axios from 'axios';
+import express, { Response } from 'express';
 import bodyParser from 'body-parser';
-import { createServer } from "http";
-import { Socket } from 'socket.io';
 
-import QueueHandler from './classes/queueHandler';
-import SocketHandler from './classes/socketHandler';
 import { createFile, removeFile } from './utils/filesystemUtils';
 import { checkEnv, corsConfig, corsOpts, queueName } from './utils/startupUtils';
+import cors from 'cors';
 
 /* -------------- INITIALIZATION -------------- */
 checkEnv();
-const app = express();
-const httpServer = createServer(app);
-const queueHandler = new QueueHandler();
-const ioHandler = new SocketHandler(httpServer, {cors: corsOpts});
-queueHandler.createQueue(queueName);
+
+const compilerInstance = axios.create({
+  baseURL: `http://${process.env.COMPILER_HOST}:${process.env.COMPILER_PORT}/`
+})
+
+const PORT = process.env.BACKEND_HTTP_PORT;
+
+interface ProcessOutput {
+  stdout: string,
+  stderr: string,
+  exitCode: number
+};
+interface CompilationResult {
+  procOutput: ProcessOutput,
+  inPath: string,
+  outPath: string
+}
+
 
 /* -------------- WEB SERVER CONFIGURATION -------------- */
+const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(corsConfig);
+app.use(cors({origin: true}));
 
 app.get("/", (_, res) => {
   res.status(200).end();
@@ -28,45 +40,20 @@ app.get("/", (_, res) => {
 app.post("/compile", async (req, res) => {
   const codeTxt = req.body.code;
   const cflags = req.body.cflags || undefined;
-  const clientId = req.body.clientId;
+
   const [_, inFilename] = createFile(codeTxt);
-  console.log(`[HTTP] Got compilation request from ${req.hostname}  - ${clientId} - ${inFilename}`);
-  const payload = { inFilename, cflags, clientId };
-  try {
-    const queueRes = await queueHandler.pushToQueue(queueName, JSON.stringify(payload));
-    if (queueRes) {
-      res.status(200).send("OK!");
-    } else {
-      res.status(503).send("[QUEUE] Service unavailable");
-    }
-  } catch (err: any) {
-    res.status(503).send("[QUEUE] Service unavailable");
-  }
+  console.log(`[HTTP] Got compilation request from ${req.hostname} - ${inFilename}`);
+  const payload = { inFilename, cflags };
+  const compilationResponse: any = await compilerInstance.post("/compile", payload);
+
+  const compilationResult: CompilationResult = compilationResponse.data;
+  removeFile(compilationResult.inPath);
+  removeFile(compilationResult.outPath);
+
+  res.status(200).send(compilationResult.procOutput);
 });
 
-app.post("/compilation-result", (req, res) => {
-  console.log("[HTTP] Got compilation results");
-  const inFilename: string = req.body.data.inFilename;
-  removeFile(inFilename);
-  const outFilename: string = req.body.data.outFilename;
-  removeFile(outFilename);
-  delete req.body.data.outFilename;
-  //queueHandler.decrement();
-  const clientId: string = req.body.data.clientId;
-  ioHandler.emitToClient(clientId, "compilation-result", req.body.data.compilationResults);
-  res.status(200).send("OK!");
-});
 
-httpServer.listen(process.env.BACKEND_HTTP_PORT, () => {
-  console.log(`[HTTP] Server running on port ${process.env.BACKEND_HTTP_PORT}`);
-
-  const io = ioHandler.getSocketInstance();
-  io.on("connection", (socket: Socket) => {
-    console.log("[SOCKET] Accepted connection from client", socket.id);
-    ioHandler.addClientSocket(socket.id, socket);
-
-    socket.on('disconnect', () => {
-      ioHandler.removeClientSocket(socket.id);
-    });
-  });
-});
+app.listen(PORT, () => {
+  console.log(`Backend listening on port ${PORT}`);
+})

@@ -12,8 +12,7 @@ export const createFile = (code: string): string[] => {
   return [inPath, inFilename];
 } 
 
-export const removeFile = (filename: string): void => {
-  const filepath: string = path.join(baseDir, filename);
+export const removeFile = (filepath: string): void => {
   if (filepath) {
 
     if (fs.existsSync(filepath)) {

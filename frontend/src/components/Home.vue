@@ -30,7 +30,6 @@
 <script>
 
 import ApiService from '../services/api.service';
-import socketService from '../services/socket.service';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import { PrismEditor } from 'vue-prism-editor';
 import 'vue-prism-editor/dist/prismeditor.min.css';
@@ -76,6 +75,9 @@ export default {
       return highlight(code, languages.clike);
     },
     compile() {
+      this.compiled = false;
+      this.compilationInProgress = true;
+      
       localStorage.setItem('cflags', this.cflags);
       localStorage.setItem('code', this.code);
       ApiService.post('/compile', 
@@ -85,9 +87,12 @@ export default {
         }
       )
       .then((res) => {
-        this.compiled = false;
-        this.compilationInProgress = true;
-        return res;
+        this.compiled = true;
+        this.compilationInProgress = false;
+
+        this.exitCode = res.data.exitCode;
+        this.stderr = res.data.stderr;
+        console.log(res.data);
       });
     },
     mayInitData() {
@@ -100,14 +105,8 @@ export default {
     },
   },
   mounted() {
-    socketService.on("compilation-result", (results) => {
-      this.compilationInProgress = false;
-
-      this.exitCode = results.exitCode;
-      this.stderr = results.stderr;
-      this.compiled = true;
-    });
     this.mayInitData();
+    this.compiled = false;
   }
 }
 </script>
