@@ -6,13 +6,13 @@
 
   <!-- Client side setup -->
   <clients>
-    <client host="localhost" use_controller_vm="true"/>
+    <client host="localhost" use_controller_vm="true" maxusers="10000"/>
   </clients>
   
   <!-- Server side setup -->
-<servers>
-  <server host="localhost" port="8081" type="tcp"></server>
-</servers>
+  <servers>
+    <server host="localhost" port="8081" type="tcp"></server>
+  </servers>
 
   <!-- to start os monitoring (cpu, network, memory). Use an erlang
   agent on the remote machine or SNMP. erlang is the default --> 
@@ -26,7 +26,7 @@
   duration -->
    <arrivalphase phase="1" duration="2" unit="minute">
 
-    <users interarrival="0.5" unit="second"></users>
+    <users interarrival="0.005" unit="second"></users>
 
     <!-- Let's stress the system:
       we know from previous run that the service mean time (μ) is 6.90 msec ie 0.007 sec. 
