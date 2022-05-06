@@ -1,29 +1,18 @@
 import axios from 'axios';
-import express, { Response } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 
 import { createFile, removeFile } from './utils/filesystemUtils';
-import { checkEnv, corsConfig } from './utils/startupUtils';
+import { checkEnv, corsConfig, CompilationResult} from './utils/startupUtils';
 
 /* -------------- INITIALIZATION -------------- */
 checkEnv();
 
 const compilerInstance = axios.create({
-  baseURL: `http://${process.env.COMPILER_HOST}:${process.env.COMPILER_PORT}/`
+  baseURL: process.env.COMPILER_API_ROOT
 })
 
-const PORT = process.env.BACKEND_HTTP_PORT;
-
-interface ProcessOutput {
-  stdout: string,
-  stderr: string,
-  exitCode: number
-};
-interface CompilationResult {
-  procOutput: ProcessOutput,
-  inPath: string,
-  outPath: string
-}
+const PORT = process.env.BACKEND_HTTP_PORT || 8080;
 
 
 /* -------------- WEB SERVER CONFIGURATION -------------- */
@@ -33,9 +22,12 @@ app.use(bodyParser.json())
 app.use(corsConfig);
 
 app.get("/", async (_, res) => {
-  const maxActiveJobsResult: any = await compilerInstance.get('/peekMaxActiveJobs');
-
-  res.status(200).send(`<h1>SVC BACKEND</h1></br> Compiler max jobs: ${maxActiveJobsResult.data.maxActiveJobs}`);
+  const maxActiveJobsResult: any = await compilerInstance.get('/stats/maxActiveJobs');
+  res.status(200).send(`
+    <h1>SVC BACKEND</h1>
+    </br>
+    Compiler max jobs: ${maxActiveJobsResult.data.maxActiveJobs}`
+  );
 });
 
 app.post("/compile", async (req, res) => {

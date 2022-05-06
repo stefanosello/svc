@@ -39,8 +39,8 @@ export default class JobQueue {
       this.activeJobs += 1;
       if (this.activeJobs > this.maxActiveJobs) {
         this.maxActiveJobs = this.activeJobs;
+        console.log(`[COMPILER] Max active jobs: ${this.activeJobs}`)
       }
-      console.log(`[COMPILER] Active jobs: ${this.activeJobs}`)
       const procOutput: ProcessOutput = await this.cb(job);
       
       this.activeJobs -= 1;

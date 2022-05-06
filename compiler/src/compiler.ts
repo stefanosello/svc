@@ -7,21 +7,21 @@ import JobQueue, { Job, ProcessOutput } from './classes/jobQueue';
 import { spawn } from 'child_process';
 import shlex from 'shlex';
 
-const app = express();
 
 
 const MANDATORY_CONFIG_KEYS = [
-    "COMPILER_PORT",
-    "COMPILER_BASE_DIR",
-    "COMPILER_QUEUE_MAXJOBS",
+  "COMPILER_HTTP_PORT",
+  "COMPILER_BASE_DIR",
+  "COMPILER_QUEUE_MAXJOBS",
 ];
 MANDATORY_CONFIG_KEYS.forEach(key => {
   if (!process.env[key]) throw new Error(`Missing config key: ${key}`);
 });
 const baseDir = process.env.COMPILER_BASE_DIR;
-const PORT = process.env.COMPILER_PORT;
+const PORT = process.env.COMPILER_HTTP_PORT || 8082;
 
 /* -------------- WEB SERVER CONFIGURATION -------------- */
+const app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cors());
@@ -34,7 +34,6 @@ let jobQueue: JobQueue;
 
 async function compile(job: Job): Promise<ProcessOutput> {
 
-  // TODO change to spawnSync?
   async function spawnChild(cmd: string, args: string[]): Promise<ProcessOutput> {
     const child = spawn(cmd, args);
   
@@ -78,7 +77,7 @@ app.post('/compile', (req, res) => {
   jobQueue.execute(job);
 })
 
-app.get('/peekMaxActiveJobs', (req, res) => {
+app.get('/stats/maxActiveJobs', (req, res) => {
   const maxActiveJobs: number = jobQueue.getMaxActiveJobs();
   res.status(200).send( { maxActiveJobs } );
 });
@@ -86,7 +85,8 @@ app.get('/peekMaxActiveJobs', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Compiler listening on port ${PORT}`);
 
-  jobQueue = new JobQueue(QUEUE_MAX_JOBS, (job: Job): Promise<ProcessOutput> => {
-    return compile(job);
-  });
+  jobQueue = new JobQueue(QUEUE_MAX_JOBS, 
+    (job: Job): Promise<ProcessOutput> => {
+      return compile(job);
+    });
 })

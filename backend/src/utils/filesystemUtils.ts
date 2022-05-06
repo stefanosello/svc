@@ -8,7 +8,6 @@ export const createFile = (code: string): string[] => {
   const inFilename = `${randomUUID()}.cpp`;
   const inPath = path.join(baseDir, inFilename);
   fs.writeFileSync(inPath, code);
-  //console.log(`[FS] Created file: ${inPath}`);
   return [inPath, inFilename];
 } 
 
@@ -19,8 +18,6 @@ export const removeFile = (filepath: string): void => {
       fs.unlink(filepath, (err) => { 
         if (err) {
           console.error(`[FS] ERROR: Remove file ${filepath} failed: ${err}`);
-        } else {
-        //  console.error(`[FS] Removed file: ${inPath}`);
         }
       });
 
