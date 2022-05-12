@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE tsung SYSTEM "usr/local/share/tsung/tsung-1.0.dtd" [
-  <!ENTITY recorded_session SYSTEM "recorded_session.xml">
-  <!ENTITY ip "http://34.65.207.218">
+  <!ENTITY ip "34.65.207.218">
 ]>
 <tsung loglevel="notice" version="1.0">
 
@@ -12,7 +11,7 @@
   
   <!-- Server side setup -->
   <servers>
-    <server host="localhost" port="8081" type="tcp"></server>
+    <server host="&ip;" port="8080" type="tcp"></server>
   </servers>
 
   <!-- to start os monitoring (cpu, network, memory). Use an erlang
@@ -27,7 +26,7 @@
   duration -->
    <arrivalphase phase="1" duration="2" unit="minute">
 
-    <users interarrival="0.5" unit="second"></users>
+    <users interarrival="0.01" unit="second"></users>
 
    </arrivalphase>
   </load>
@@ -44,10 +43,21 @@
   probabilities must be 100 -->
 
  <sessions>
-  <session name="http-example" probability="0" type="ts_http">
-    <request> <http url="/" method="GET" version="1.1"></http> </request>
+  <session name='session_1' probability='100'  type='ts_http'>
+
+    <request><http url='http://&ip;' version='1.1' method='GET'>
+      <http_header name='Accept' value='text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8' />
+      <http_header name='Accept-Encoding' value='gzip, deflate' />
+      <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
+
+    <thinktime random='true' value='0.17'/> <!-- ~6 secs -->
+
+    <request><http url='http://&ip;:8080/compile' version='1.1'  contents='{&quot;code&quot;:&quot;a&quot;,&quot;cflags&quot;:&quot;&quot;,&quot;clientId&quot;:&quot;A5UDTHgG4Mf4skzuAAAJ&quot;}' content_type='application/json' method='POST'>
+      <http_header name='Accept' value='application/json, text/plain, */*' />
+      <http_header name='Accept-Encoding' value='gzip, deflate' />
+      <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
+
   </session>
-  &recorded_session;
  </sessions>
 </tsung>
 

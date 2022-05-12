@@ -1,0 +1,115 @@
+# INTER_ARRIVALS: 
+#  0.1   
+#  0.05
+#  0.03
+
+# MAX_JOBS: 
+#  10
+#  50
+#  100
+#  500
+
+tsung:
+  config_file: http_simple.xml
+
+# ------------------------------- #
+# ---- [ IA: 0.1; JOBS: 10] ---- #
+  test1:
+    params:
+      interarrival: 0.1
+      max_jobs: 10
+    result:
+      dir:
+      service_time: 
+# ---- [ IA: 0.1; JOBS: 50] ---- #
+  test2:
+    params:
+      interarrival: 0.1
+      max_jobs: 50
+    result:
+      dir:
+      service_time:
+# ---- [ IA: 0.1; JOBS: 100] ---- #
+  test3:
+    params:
+      interarrival: 0.1
+      max_jobs: 100
+    result:
+      dir:
+      service_time:
+# ---- [ IA: 0.1; JOBS: 500] ---- #
+  test4:
+    params:
+      interarrival: 0.1
+      max_jobs: 500
+    result:
+      dir:
+      service_time:
+
+# ------------------------------- #
+# ---- [ IA: 0.05; JOBS: 10] ---- #
+  test5:
+    params:
+      interarrival: 0.05
+      max_jobs: 10
+    result:
+      dir:
+      service_time:
+# ---- [ IA: 0.05; JOBS: 50] ---- #
+  test6:
+    params:
+      interarrival: 0.05
+      max_jobs: 50
+    result:
+      dir:
+      service_time:
+# ---- [ IA: 0.05; JOBS: 100] ---- #
+  test7:
+    params:
+      interarrival: 0.05
+      max_jobs: 100
+    result:
+      dir:
+      service_time:
+# ---- [ IA: 0.05; JOBS: 500] ---- #
+  test8:
+    params:
+      interarrival: 0.05
+      max_jobs: 500
+    result:
+      dir:
+      service_time:
+
+# ------------------------------- #
+# ---- [ IA: 0.03; JOBS: 10] ---- #
+  test9:
+    params:
+      interarrival: 0.03
+      max_jobs: 10
+    result:
+      dir:
+      service_time:
+# ---- [ IA: 0.03; JOBS: 50] ---- #
+  test10:
+    params:
+      interarrival: 0.03
+      max_jobs: 50
+    result:
+      dir:
+      service_time:
+# ---- [ IA: 0.03; JOBS: 100] ---- #
+  test11:
+    params:
+      interarrival: 0.03
+      max_jobs: 100
+    result:
+      dir:
+      service_time:
+# ---- [ IA: 0.03; JOBS: 500] ---- #
+  test12:
+    params:
+      interarrival: 0.03
+      max_jobs: 500
+    result:
+      dir:
+      service_time:
