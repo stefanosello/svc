@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE tsung SYSTEM "usr/local/share/tsung/tsung-1.0.dtd" [
-  <!ENTITY ip "34.65.207.218">
+  <!ENTITY ip SYSTEM "ip.txt">
+  <!ENTITY interarrival SYSTEM "interarrival.txt">
 ]>
 <tsung loglevel="notice" version="1.0">
 
@@ -24,9 +25,9 @@
   <!-- several arrival phases can be set: for each phase, you can set
   the mean inter-arrival time between new clients and the phase
   duration -->
-   <arrivalphase phase="1" duration="2" unit="minute">
+   <arrivalphase phase="1" duration="2" unit="second">
 
-    <users interarrival="0.01" unit="second"></users>
+    <users interarrival="&interarrival;" unit="second"></users>
 
    </arrivalphase>
   </load>

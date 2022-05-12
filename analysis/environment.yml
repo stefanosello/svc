@@ -1,0 +1,4 @@
+name: svc
+dependencies:
+  - pyyaml
+  - requests
