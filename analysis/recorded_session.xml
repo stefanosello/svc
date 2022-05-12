@@ -1,21 +1,15 @@
 <session name='rec20220421-1518' probability='100'  type='ts_http'>
-<!-- <request><http url='http://188.216.249.29:5678/' version='1.1' method='GET'>
+
+<request><http url='&ip;' version='1.1' method='GET'>
   <http_header name='Accept' value='text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8' />
   <http_header name='Accept-Encoding' value='gzip, deflate' />
   <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
-<request><http url='/js/app.js' version='1.1' method='GET'>
-  <http_header name='Accept' value='*/*' />
-  <http_header name='Accept-Encoding' value='gzip, deflate' />
-  <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
-<request><http url='/js/chunk-vendors.js' version='1.1' method='GET'>
-  <http_header name='Accept' value='*/*' />
-  <http_header name='Accept-Encoding' value='gzip, deflate' />
-  <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request> -->
 
-<!-- <thinktime random='true' value='1'/> -->
+<thinktime random='true' value='0.17'/> <!-- ~6 secs -->
 
-<request><http url='http://5.89.109.216:5679/compile' version='1.1'  contents='{&quot;code&quot;:&quot;a&quot;,&quot;cflags&quot;:&quot;&quot;,&quot;clientId&quot;:&quot;A5UDTHgG4Mf4skzuAAAJ&quot;}' content_type='application/json' method='POST'>
+<request><http url='&ip;:8080/compile' version='1.1'  contents='{&quot;code&quot;:&quot;a&quot;,&quot;cflags&quot;:&quot;&quot;,&quot;clientId&quot;:&quot;A5UDTHgG4Mf4skzuAAAJ&quot;}' content_type='application/json' method='POST'>
   <http_header name='Accept' value='application/json, text/plain, */*' />
   <http_header name='Accept-Encoding' value='gzip, deflate' />
   <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
+
 </session>

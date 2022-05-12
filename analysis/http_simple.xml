@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE tsung SYSTEM "usr/local/share/tsung/tsung-1.0.dtd" [
   <!ENTITY recorded_session SYSTEM "recorded_session.xml">
+  <!ENTITY ip "http://34.65.207.218">
 ]>
 <tsung loglevel="notice" version="1.0">
 
@@ -26,17 +27,7 @@
   duration -->
    <arrivalphase phase="1" duration="2" unit="minute">
 
-    <users interarrival="0.005" unit="second"></users>
-
-    <!-- Let's stress the system:
-      we know from previous run that the service mean time (μ) is 6.90 msec ie 0.007 sec. 
-        μ max is 1/0.007 ~= 143 requests per second
-      
-      λ = 1/interarrival time
-      so decrease the time to increase λ and stress the system
-    
-    <users interarrival="0.005" unit="second"></users>
-    -->
+    <users interarrival="0.5" unit="second"></users>
 
    </arrivalphase>
   </load>
@@ -54,7 +45,6 @@
 
  <sessions>
   <session name="http-example" probability="0" type="ts_http">
-    <!-- full url with server name, this overrides the "server" config value -->
     <request> <http url="/" method="GET" version="1.1"></http> </request>
   </session>
   &recorded_session;
