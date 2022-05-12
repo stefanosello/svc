@@ -100,10 +100,16 @@ app.get('/stats/maxJobs', (_, res) => {
   res.status(200).send( { maxJobs } );
 });
 
-app.post('/stats/maxJobs/update', (req, res) => {
-  const maxJobs: number = req.body.jobs;
-  jobQueue.setMaxJobs(maxJobs);
-  res.status(200).send(`OK: ${maxJobs}`);
+app.post('/stats/update', (req, res) => {
+  const maxJobs: number = req.body.maxJobs || undefined;
+  const resetMaxJobs: number = req.body.resetMaxJobs || undefined;
+  if (maxJobs) {
+    jobQueue.setMaxJobs(maxJobs);
+  }
+  if (resetMaxJobs) {
+    jobQueue.setMaxJobsReached(0);
+  }
+  res.status(200).send(`OK: ${maxJobs}, ${resetMaxJobs}`);
 })
 
 app.listen(PORT, () => {

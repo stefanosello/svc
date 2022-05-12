@@ -76,6 +76,10 @@ export default class JobQueue {
     return this.activeJobs;
   }
 
+  public setMaxJobsReached(maxJobsReached: number) {
+    this.maxJobsReached = maxJobsReached;
+  }
+  
   public getMaxJobsReached(): number {
     return this.maxJobsReached;
   }

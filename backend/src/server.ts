@@ -35,9 +35,25 @@ app.get("/", async (_, res) => {
   );
 });
 
-app.get("/maxjobs/update", async (req, res) => {
-  const maxJobs = req.query.jobs;
-  const result = await compilerInstance.post("/stats/maxJobs/update", {jobs: maxJobs});
+app.get("/stats/update", async (req, res) => {
+  const maxJobs = req.query.maxJobs || undefined;
+  const resetMaxJobs = req.query.resetMaxJobs || undefined;
+
+  if (!maxJobs && !resetMaxJobs) {
+    res.status(200).send(`
+      Missing query parameters.
+      </br>
+      Available options:
+      </br>
+      <ul>
+        <li><b>maxJobs</b>: int         set number of simultaneous jobs available
+        <li><b>resetMaxJobs</b>         reset to 0 the current number of jobs reached
+      </ul>
+    `);
+
+  }
+  
+  const result = await compilerInstance.post("/stats/update", {maxJobs, resetMaxJobs});
   res.status(200).send(result.data);
 });
 
