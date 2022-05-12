@@ -22,12 +22,23 @@ app.use(bodyParser.json())
 app.use(corsConfig);
 
 app.get("/", async (_, res) => {
-  const maxActiveJobsResult: any = await compilerInstance.get('/stats/maxActiveJobs');
+  const maxJobsReachedResult: any = await compilerInstance.get('/stats/maxJobsReached');
+  const maxJobsResult: any = await compilerInstance.get('/stats/maxJobs');
+
   res.status(200).send(`
     <h1>SVC BACKEND</h1>
     </br>
-    Compiler max jobs: ${maxActiveJobsResult.data.maxActiveJobs}`
+    Compiler max jobs available: ${maxJobsResult.data.maxJobs}
+    </br>
+    Compiler max jobs reached: ${maxJobsReachedResult.data.maxJobsReached}
+    `
   );
+});
+
+app.get("/maxjobs/update", async (req, res) => {
+  const maxJobs = req.query.jobs;
+  const result = await compilerInstance.post("/stats/maxJobs/update", {jobs: maxJobs});
+  res.status(200).send(result.data);
 });
 
 app.post("/compile", async (req, res) => {

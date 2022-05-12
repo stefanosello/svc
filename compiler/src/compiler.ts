@@ -62,6 +62,9 @@ async function compile(job: Job): Promise<ProcessOutput> {
   return spawnChild(cmd, args);
 }
 
+/** 
+ * POST  /compile
+*/
 app.post('/compile', (req, res) => {
   const cflags: string = req.body.cflags || "";
   const inFilename: string = req.body.inFilename;
@@ -77,10 +80,31 @@ app.post('/compile', (req, res) => {
   jobQueue.execute(job);
 })
 
-app.get('/stats/maxActiveJobs', (req, res) => {
-  const maxActiveJobs: number = jobQueue.getMaxActiveJobs();
-  res.status(200).send( { maxActiveJobs } );
+/** 
+ * GET  /stats/maxJobsReached 
+ * Returns number of maximum simultaneous jobs executed 
+ * 
+*/
+app.get('/stats/maxJobsReached', (_, res) => {
+  const maxJobsReached: number = jobQueue.getMaxJobsReached();
+  res.status(200).send( { maxJobsReached } );
 });
+
+/** 
+ * GET  /stats/maxJobs 
+ * Returns number of maximum simultaneous jobs allowed to execute 
+ * 
+*/
+app.get('/stats/maxJobs', (_, res) => {
+  const maxJobs: number = jobQueue.getMaxJobs();
+  res.status(200).send( { maxJobs } );
+});
+
+app.post('/stats/maxJobs/update', (req, res) => {
+  const maxJobs: number = req.body.jobs;
+  jobQueue.setMaxJobs(maxJobs);
+  res.status(200).send(`OK: ${maxJobs}`);
+})
 
 app.listen(PORT, () => {
   console.log(`Compiler listening on port ${PORT}`);
