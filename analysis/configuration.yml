@@ -10,7 +10,7 @@
 #  500
 
 tsung:
-  ip: "localhost" #"34.65.207.218"
+  ip: "34.65.207.218" # "localhost"
   config_file: http_simple.xml
   log_dir: "results/"
 
