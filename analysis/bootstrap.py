@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import sys
 import yaml
 from yaml.loader import SafeLoader
 import subprocess
@@ -23,6 +24,11 @@ def print_header():
     print("  SVC - Performance analysis tester  ")  
     print(" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")                                              
     print()
+
+def print_help():
+    print("Usage: python bootstrap.py [TEST] [OPTIONS]")
+    print("   TEST        one of test1, test2, ..., test12.")
+    print("   OPTIONS     -h, --help for print this helper.")
 
 def log(txt):
   print(f'> {txt}')
@@ -59,17 +65,16 @@ def prepare_config(config_name, config_params):
   if r.status_code != 200:
     raise Exception("cannot update server stats")
 
-def run_all_configs():
-  global CONFIGURATION
-
-  configs = list(CONFIGURATION['tsung']['configs'].keys())
-  for config_name in configs:
-    run_config(config_name)
 
 def run_config(config_name):
   global CONFIGURATION
   
-  configuration = CONFIGURATION['tsung']['configs'][config_name]
+  try:
+    configuration = CONFIGURATION['tsung']['configs'][config_name]
+  except Exception:
+    print(f"Error: configuration '{config_name}' not found in configuration.yml")
+    exit(1)
+  
   prepare_config(config_name, configuration['params'])
   run_tsung()
 
@@ -99,6 +104,14 @@ if __name__=="__main__":
   print_header()
   CONFIGURATION = read_yaml()
 
-  run_config("test1")
+  if len(sys.argv) < 2:
+    print_help()
+    print("Error: no argument provided.")
+    exit(1)
+    
+  test = sys.argv[1]
+  if test in ("--help", "-h"):
+    print_help()
+    exit(0)
 
-  # run_all_configs()
+  run_config(test)
