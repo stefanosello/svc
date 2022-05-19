@@ -52,6 +52,9 @@ tsung:
       params:
         interarrival: 0.05
         max_jobs: 100
+      result:
+        service_rate: 18.96
+        max_jobs_reached: 100
     test8:
       params:
         interarrival: 0.05
