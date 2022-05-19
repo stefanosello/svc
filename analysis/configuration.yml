@@ -21,7 +21,7 @@ tsung:
         interarrival: 0.1
         max_jobs: 10
       result:
-        service_rate: 9.83 # jobs/sec
+        service_rate: 9.83
         max_jobs_reached: 7
     test2:
       params:
@@ -41,6 +41,9 @@ tsung:
       params:
         interarrival: 0.05
         max_jobs: 10
+      result:
+        service_rate: 18.97
+        max_jobs_reached: 10
     test6:
       params:
         interarrival: 0.05
