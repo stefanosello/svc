@@ -1,0 +1,1583 @@
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+    ts_config_server:(5:<0.133.0>) Config server started, logdir is "/home/westfox5/programming/svc/analysis/results/20220519-1528"
+ 
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+              ts_mon:(5:<0.116.0>) starting monitor, global 
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+           ts_config:(5:<0.133.0>) Reading config file: http_simple.xml
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+      ts_config_http:(4:<0.133.0>) Get user agent: 80 "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.8) Gecko/20050513 Galeon/1.3.21" 
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+      ts_config_http:(4:<0.133.0>) Get user agent: 20 "Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4" 
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+           ts_config:(5:<0.133.0>) Session name for id 1 is "session_1"
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+    ts_config_server:(4:<0.133.0>) SYSINFO:Tsung version: 1.7.0
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+    ts_config_server:(4:<0.133.0>) SYSINFO:Erlang version: Erlang/OTP 23 [erts-11.1.8] [source] [64-bit] [smp:12:12] [ds:12:12:10] [async-threads:8]
+
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+    ts_config_server:(4:<0.133.0>) SYSINFO:System architecture x86_64-pc-linux-gnu
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+    ts_config_server:(4:<0.133.0>) SYSINFO:Current path: /usr/lib/tsung/tsung-1.7.0/ebin/tsung.beam
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+      ts_os_mon_snmp:(5:<0.152.0>) starting os_mon_snmp with args {"myserver",
+                                                                   {161,
+                                                                    "public",
+                                                                    v2,[]},
+                                                                   10000,
+                                                                   {global,
+                                                                    ts_mon}}
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+              ts_mon:(5:<0.134.0>) Activate clients with text backend
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+              ts_mon:(5:<0.134.0>) Starting tsung clients on hosts: [localhost]
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+    ts_config_server:(5:<0.133.0>) Start a launcher on the controller beam localhost
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+  ts_launcher_static:(5:<0.190.0>) Launch msg receive ("localhost")
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+         ts_launcher:(5:<0.191.0>) Launch msg receive ("localhost")
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+    ts_config_server:(5:<0.133.0>) New arrival phase 1 for client "localhost" (last ? true): will start 25714 users
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+         ts_launcher:(5:<0.191.0>) Expected duration of first phase: 1.8e3 sec (25714 users) 
+
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+         ts_launcher:(2:<0.191.0>) WARNING !!! too few file descriptors available (1024), you should decrease maxusers (currently 10000)
+=INFO REPORT==== 19-May-2022::15:28:29 ===
+         ts_launcher:(5:<0.191.0>) Activate launcher (25714 users) in 1050 msec 
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+Error in process <0.192.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/tsung/tsung_controller-1.7.0/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/tsung/tsung-1.7.0/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: ./sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/kernel-7.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/stdlib-3.14/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/xmerl-1.3.26/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/wx-1.9.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/tools-3.4.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/tftp-1.0.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/syntax_tools-2.4/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/ssl-10.2.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/ssh-4.10.8/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/snmp-5.7.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/sasl-4.0.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/runtime_tools-1.15.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/reltool-0.8/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/public_key-1.9.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/parsetools-2.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/os_mon-2.6.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/odbc-2.13.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/observer-2.9.5/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/mnesia-4.18.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/megaco-3.19.5/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/jinterface-1.11/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/inets-7.3.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/hipe-4.0.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/ftp-1.0.5/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/eunit-2.6/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/et-1.6.4/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/erts-11.1.8/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/erl_interface-4.0.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/erl_docgen-1.0.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/eldap-1.2.8/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/edoc-0.12/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/diameter-2.2.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/dialyzer-4.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/debugger-5.0/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/crypto-4.8.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/compiler-7.6.6/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/common_test-1.19.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/asn1-5.0.14/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:31 ===
+File operation error: emfile. Target: sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+Error in process <0.6335.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/stdlib-3.14/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/xmerl-1.3.26/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/wx-1.9.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/tools-3.4.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/tftp-1.0.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/syntax_tools-2.4/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/ssl-10.2.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/ssh-4.10.8/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/snmp-5.7.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/sasl-4.0.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/runtime_tools-1.15.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/reltool-0.8/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/public_key-1.9.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/parsetools-2.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/os_mon-2.6.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/odbc-2.13.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/observer-2.9.5/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/mnesia-4.18.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/megaco-3.19.5/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/jinterface-1.11/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/inets-7.3.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/hipe-4.0.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/ftp-1.0.5/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/eunit-2.6/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/et-1.6.4/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/erts-11.1.8/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/erl_interface-4.0.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/erl_docgen-1.0.2/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/eldap-1.2.8/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/edoc-0.12/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/diameter-2.2.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/dialyzer-4.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/debugger-5.0/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/crypto-4.8.3/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/compiler-7.6.6/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/common_test-1.19.1/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: /usr/lib/erlang/lib/asn1-5.0.14/ebin/sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:32 ===
+File operation error: emfile. Target: sys.beam. Function: get_file. Process: code_server.
+
+=ERROR REPORT==== 19-May-2022::15:35:33 ===
+Error in process <0.6352.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:33 ===
+** Generic server <0.6336.0> terminating 
+** Last message in was {'EXIT',<0.6352.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6352.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6352.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6352.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:34 ===
+** Generic server <0.6353.0> terminating 
+** Last message in was {'EXIT',<0.6367.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6367.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6367.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6367.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:34 ===
+Error in process <0.6367.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:35 ===
+** Generic server <0.6368.0> terminating 
+** Last message in was {'EXIT',<0.6379.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6379.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6379.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6379.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:35 ===
+Error in process <0.6379.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:36 ===
+** Generic server <0.6380.0> terminating 
+** Last message in was {'EXIT',<0.6396.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6396.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6396.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6396.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:36 ===
+Error in process <0.6396.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:37 ===
+** Generic server <0.6397.0> terminating 
+** Last message in was {'EXIT',<0.6413.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6413.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6413.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6413.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:37 ===
+Error in process <0.6413.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:38 ===
+** Generic server <0.6414.0> terminating 
+** Last message in was {'EXIT',<0.6432.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6432.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6432.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6432.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:38 ===
+Error in process <0.6432.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:39 ===
+** Generic server <0.6433.0> terminating 
+** Last message in was {'EXIT',<0.6452.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6452.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6452.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6452.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:39 ===
+Error in process <0.6452.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:40 ===
+** Generic server <0.6453.0> terminating 
+** Last message in was {'EXIT',<0.6466.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6466.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6466.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6466.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:40 ===
+Error in process <0.6466.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:41 ===
+** Generic server <0.6467.0> terminating 
+** Last message in was {'EXIT',<0.6485.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6485.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6485.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6485.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:41 ===
+Error in process <0.6485.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:42 ===
+** Generic server <0.6486.0> terminating 
+** Last message in was {'EXIT',<0.6500.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6500.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6500.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6500.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:42 ===
+Error in process <0.6500.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:43 ===
+** Generic server <0.6501.0> terminating 
+** Last message in was {'EXIT',<0.6511.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6511.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6511.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6511.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:43 ===
+Error in process <0.6511.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:44 ===
+** Generic server <0.6512.0> terminating 
+** Last message in was {'EXIT',<0.6530.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6530.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6530.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6530.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:44 ===
+Error in process <0.6530.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:45 ===
+** Generic server <0.6531.0> terminating 
+** Last message in was {'EXIT',<0.6544.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6544.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6544.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6544.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:45 ===
+Error in process <0.6544.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:46 ===
+** Generic server <0.6545.0> terminating 
+** Last message in was {'EXIT',<0.6559.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6559.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6559.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6559.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:46 ===
+Error in process <0.6559.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:47 ===
+** Generic server <0.6560.0> terminating 
+** Last message in was {'EXIT',<0.6576.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6576.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6576.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6576.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:47 ===
+Error in process <0.6576.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:48 ===
+** Generic server <0.6577.0> terminating 
+** Last message in was {'EXIT',<0.6591.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6591.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6591.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6591.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:48 ===
+Error in process <0.6591.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:49 ===
+** Generic server <0.6592.0> terminating 
+** Last message in was {'EXIT',<0.6607.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6607.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6607.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6607.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:49 ===
+Error in process <0.6607.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:50 ===
+** Generic server <0.6608.0> terminating 
+** Last message in was {'EXIT',<0.6627.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6627.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6627.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6627.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:50 ===
+Error in process <0.6627.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:51 ===
+Error in process <0.6640.0> on node tsung_controller@Debian with exit value:
+{emfile,[{erlang,open_port,
+                 [{spawn,"/bin/sh -s unix:cmd"},
+                  [binary,stderr_to_stdout,stream,in,hide,out]],
+                 []},
+         {os,cmd,2,[{file,"os.erl"},{line,275}]},
+         {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+         {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+         {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}
+
+=ERROR REPORT==== 19-May-2022::15:35:51 ===
+** Generic server <0.6628.0> terminating 
+** Last message in was {'EXIT',<0.6640.0>,
+                        {emfile,
+                         [{erlang,open_port,
+                           [{spawn,"/bin/sh -s unix:cmd"},
+                            [binary,stderr_to_stdout,stream,in,hide,out]],
+                           []},
+                          {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                          {ts_os_mon_erlang,get_os_data,2,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,297}]},
+                          {ts_os_mon_erlang,node_data,0,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,227}]},
+                          {ts_os_mon_erlang,updatestats,3,
+                           [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                            {line,172}]}]}}
+** When Server state == {state,{global,ts_mon},
+                               10000,tsung_controller@Debian,"Debian",
+                               <0.6640.0>,false,[]}
+** Reason for termination ==
+** {function_clause,
+       [{ts_os_mon_erlang,handle_info,
+            [{'EXIT',<0.6640.0>,
+                 {emfile,
+                     [{erlang,open_port,
+                          [{spawn,"/bin/sh -s unix:cmd"},
+                           [binary,stderr_to_stdout,stream,in,hide,out]],
+                          []},
+                      {os,cmd,2,[{file,"os.erl"},{line,275}]},
+                      {ts_os_mon_erlang,get_os_data,2,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,297}]},
+                      {ts_os_mon_erlang,node_data,0,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,227}]},
+                      {ts_os_mon_erlang,updatestats,3,
+                          [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},
+                           {line,172}]}]}},
+             {state,
+                 {global,ts_mon},
+                 10000,tsung_controller@Debian,"Debian",<0.6640.0>,false,[]}],
+            [{file,"src/tsung_controller/ts_os_mon_erlang.erl"},{line,121}]},
+        {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,689}]},
+        {gen_server,handle_msg,6,[{file,"gen_server.erl"},{line,765}]},
+        {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,226}]}]}
+
+=INFO REPORT==== 19-May-2022::15:58:26 ===
+         ts_launcher:(5:<0.191.0>) This was the last phase, wait for connected users to finish their session
+
+=INFO REPORT==== 19-May-2022::15:59:56 ===
+     ts_launcher_mgr:(5:<0.184.0>) No more active users tsung_controller@Debian "5356"
+
+=INFO REPORT==== 19-May-2022::15:59:56 ===
+              ts_mon:(5:<0.134.0>) stopping monitor (normal)
