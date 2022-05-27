@@ -12,15 +12,9 @@ export const createFile = (code: string): string[] => {
 } 
 
 export const removeFile = (filepath: string): void => {
-  if (filepath) {
-
-    if (fs.existsSync(filepath)) {
-      fs.unlink(filepath, (err) => { 
-        if (err) {
-          console.error(`[FS] ERROR: Remove file ${filepath} failed: ${err}`);
-        }
-      });
-
-    }
+  if (filepath && fs.existsSync(filepath)) {
+    fs.unlink(filepath, (err) => { 
+      if (err) console.error(`[FS] ERROR: Remove file ${filepath} failed: ${err}`);
+    });
   }
 } 

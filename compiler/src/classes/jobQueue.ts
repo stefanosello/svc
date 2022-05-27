@@ -42,7 +42,7 @@ export default class JobQueue {
         console.log(`[COMPILER] Max active jobs: ${this.activeJobs}`)
       }
       const procOutput: ProcessOutput = await this.cb(job);
-      
+
       this.activeJobs -= 1;
       this.executePendingJob()
       const responseBody: CompilationResult = {
@@ -52,7 +52,7 @@ export default class JobQueue {
       }
       job.res.status(200).send(responseBody);
     } else {
-    
+
       this.enqueue(job);
 
     }
@@ -79,7 +79,7 @@ export default class JobQueue {
   public setMaxJobsReached(maxJobsReached: number) {
     this.maxJobsReached = maxJobsReached;
   }
-  
+
   public getMaxJobsReached(): number {
     return this.maxJobsReached;
   }
