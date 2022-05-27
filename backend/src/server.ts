@@ -1,9 +1,29 @@
 import axios from 'axios';
+import fs from 'fs';
 import express from 'express';
 import bodyParser from 'body-parser';
+import  { performance, PerformanceObserver } from 'perf_hooks';
 
 import { createFile, removeFile } from './utils/filesystemUtils';
 import { checkEnv, corsConfig, CompilationResult} from './utils/startupUtils';
+
+/* PERFORMACES */
+let measure: any = {}
+const perfObserver = new PerformanceObserver((items) => {
+  items.getEntries().forEach(entry => {
+    measure[entry.name] = entry.duration;
+  })
+  if (Object.values(measure).length === 3) {
+    if (process.env.PERFORMANCES_RECORD_PATH) {
+      const perfPath = process.env.PERFORMANCES_RECORD_PATH;
+      if (!fs.existsSync(perfPath))
+        fs.appendFileSync(perfPath, "server;disk;compiler\n");
+      fs.appendFileSync(perfPath, `${measure.server - measure.disk - measure.compiler};${measure.disk};${measure.compiler}\n`.replace(/\./g, ","));
+    }
+    measure = {};
+  }
+})
+perfObserver.observe({ entryTypes: ["measure"], buffered: true })
 
 /* -------------- INITIALIZATION -------------- */
 checkEnv();
@@ -58,18 +78,30 @@ app.get("/stats/update", async (req, res) => {
 });
 
 app.post("/compile", async (req, res) => {
+  performance.mark('server-start');
   const codeTxt = req.body.code;
   const cflags = req.body.cflags || undefined;
 
+  performance.mark('disk-start');
   const [_, inFilename] = createFile(codeTxt);
+  performance.mark('disk-end');
+  performance.measure('disk', 'disk-start', 'disk-end')
+
   console.log(`[HTTP] Got compilation request from ${req.hostname} - ${inFilename}`);
   const payload = { inFilename, cflags };
+  
+  performance.mark('compile-start');
   const compilationResponse: any = await compilerInstance.post("/compile", payload);
+  performance.mark('compile-end');
+  performance.measure('compiler', 'compile-start', 'compile-end')
 
   const compilationResult: CompilationResult = compilationResponse.data;
   removeFile(compilationResult.inPath);
   removeFile(compilationResult.outPath);
 
+  performance.mark('server-end');
+  performance.measure('server', 'server-start', 'server-end')
+  
   res.status(200).send(compilationResult.procOutput);
 });
 

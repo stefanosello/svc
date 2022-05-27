@@ -27,6 +27,8 @@ services:
   backend:
     build:
       context: ./backend
+    environment:
+      - PERFORMANCES_RECORD_PATH=$BACKEND_PERFORMANCES_RECORD_PATH
     env_file:
       - ./backend/.development.env
     volumes:

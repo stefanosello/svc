@@ -40,7 +40,7 @@ async function spawnChild(cmd: string, args: string[]): Promise<ProcessOutput> {
 }
 
 async function compile(job: Job): Promise<ProcessOutput> {
-  const cmdStr = `g++ ${job.cflags} ${job.inPath} -o ${job.outPath}`;
+  const cmdStr = `g++ -fsyntax-only ${job.cflags} ${job.inPath} -o ${job.outPath}`;
   const cmdShlexed: string[] = shlex.split(cmdStr) || [];
   const cmd = cmdShlexed.shift() || '';
   const args = cmdShlexed || [];
