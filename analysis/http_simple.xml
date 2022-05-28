@@ -2,6 +2,8 @@
 <!DOCTYPE tsung SYSTEM "usr/local/share/tsung/tsung-1.0.dtd" [
   <!ENTITY ip SYSTEM "ip.txt">
   <!ENTITY interarrival SYSTEM "interarrival.txt">
+  <!ENTITY heavyindex "30"> <!-- Until 30 is easy, 35 stays more ore less 6 seconds, 50 is heavy, 300 is impossible -->
+  <!ENTITY urlencodedcode "template%20%3Cint%20i%3E%5Cnclass%20A%5Cn%7B%5Cn%20%20%20%20A%3Ci%20-%201%3E%20x%3B%5Cn%20%20%20%20A%3Ci%20-%202%3E%20y%3B%5Cn%7D%3B%5Cn%5Cntemplate%20%3C%3E%5Cnclass%20A%3C0%3E%5Cn%7B%5Cn%20%20%20%20char%20a%3B%5Cn%7D%3B%5Cn%5Cntemplate%20%3C%3E%5Cnclass%20A%3C1%3E%5Cn%7B%5Cn%20%20%20%20char%20a%3B%5Cn%7D%3B%5Cn%5Cnint%20main%28%29%5Cn%7B%5Cn%20%20%20%20A%3C&heavyindex;%3E%20b%3B%5Cn%20%20%20%20return%200%3B%5Cn%7D" >
 ]>
 <tsung loglevel="notice" version="1.0">
 
@@ -55,7 +57,7 @@
     </transaction>
 
     <transaction name="req">
-      <request><http url='http://&ip;:8080/compile' version='1.1'  contents='{&quot;code&quot;:&quot;a&quot;,&quot;cflags&quot;:&quot;&quot;,&quot;clientId&quot;:&quot;A5UDTHgG4Mf4skzuAAAJ&quot;}' content_type='application/json' method='POST'>
+      <request><http url='http://&ip;:8080/compile' version='1.1'  contents='{&quot;code&quot;:&quot;&urlencodedcode;&quot;,&quot;cflags&quot;:&quot;&quot;,&quot;clientId&quot;:&quot;A5UDTHgG4Mf4skzuAAAJ&quot;}' content_type='application/json' method='POST'>
         <http_header name='Accept' value='application/json, text/plain, */*' />
         <http_header name='Accept-Encoding' value='gzip, deflate' />
         <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
