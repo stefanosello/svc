@@ -107,3 +107,5 @@ dist
 .vscode
 
 shared/*.cpp
+manager.conf
+snmpm_config_db
