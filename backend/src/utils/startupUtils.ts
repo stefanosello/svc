@@ -8,6 +8,7 @@ export interface ProcessOutput {
 
 export interface CompilationResult {
   procOutput: ProcessOutput,
+  waitingTime?: number,
   inPath: string,
   outPath: string
 }

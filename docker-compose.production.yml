@@ -40,10 +40,13 @@ services:
     build:
       context: ./compiler
       dockerfile: Dockerfile.production
+    environment:
+      - PERFORMANCES_RECORD_PATH=$COMPILER_PERFORMANCES_RECORD_PATH
     env_file:
       - ./compiler/.production.env
     volumes:
       - ./shared:/src
+      - ./analysis:/analysis
     ports:
       - '8082:8082'
     command: ["yarn", "run", "start"]

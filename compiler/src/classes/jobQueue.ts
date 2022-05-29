@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import fs from 'fs';
 
 export interface ProcessOutput {
   stdout: string,
@@ -9,10 +10,12 @@ export interface Job {
   inPath: string,
   outPath: string,
   cflags: string,
-  res: Response
+  res: Response,
+  timestamp?: number
 };
 export interface CompilationResult {
   procOutput: ProcessOutput,
+  waitingTime?: number,
   inPath: string,
   outPath: string
 }
@@ -30,31 +33,32 @@ export default class JobQueue {
     this.activeJobs = 0;
     this.jobs = [];
     this.cb = cb;
-
     this.maxJobsReached = 0;
   }
 
   public async execute(job: Job) {
+    job.timestamp = job.timestamp ? job.timestamp : Math.floor(Date.now());
     if (this.activeJobs < this.maxJobs) {
       this.activeJobs += 1;
       if (this.activeJobs > this.maxJobsReached) {
         this.maxJobsReached = this.activeJobs;
         console.log(`[COMPILER] Max active jobs: ${this.activeJobs}`)
       }
+
+      const waitingTime: number = Math.floor(Date.now()) - job.timestamp;
       const procOutput: ProcessOutput = await this.cb(job);
 
       this.activeJobs -= 1;
       this.executePendingJob()
       const responseBody: CompilationResult = {
         procOutput,
+        waitingTime,
         inPath: job.inPath,
         outPath: job.outPath
       }
       job.res.status(200).send(responseBody);
     } else {
-
       this.enqueue(job);
-
     }
   }
 
