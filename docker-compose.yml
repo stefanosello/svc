@@ -45,8 +45,6 @@ services:
   compiler:
     build:
       context: ./compiler
-    environment:
-      - PERFORMANCES_RECORD_PATH=$COMPILER_PERFORMANCES_RECORD_PATH
     env_file:
       - ./compiler/.development.env
     volumes:
