@@ -12,3 +12,7 @@ tsung:
       params:
         interarrival: 0.048
         max_jobs: 200
+    test3:
+      params:
+        interarrival: 0.048
+        max_jobs: 25
