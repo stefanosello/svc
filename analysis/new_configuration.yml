@@ -1,0 +1,10 @@
+tsung:
+  ip: "34.65.207.218" # "localhost"
+  config_file: http_simple.xml
+  log_dir: "new_results/"
+
+  configs:
+    test1:
+      params:
+        interarrival: 1
+        max_jobs: 200
