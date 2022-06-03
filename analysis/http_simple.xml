@@ -48,7 +48,7 @@
   <session name='session_1' probability='100'  type='ts_http'>
     <for from="1" to="150" var="counter">
       <transaction name="think">	  
-        <request><http url='http://&ip;' version='1.1' method='GET'></request>
+        <request><http url='http://&ip;' version='1.1' method='GET'></http></request>
         <thinktime random='true' value='5'/>
       </transaction>
 
