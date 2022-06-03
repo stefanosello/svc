@@ -53,13 +53,14 @@
       </transaction>
 
       <transaction name="req">
-        <setdynvars sourcetype="random_number" start="25" end="40">
+        <setdynvars sourcetype="random_number" start="1" end="35">
           <var name="heavyness"></var>
         </setdynvars>
         <request subst="true"><http url='http://&ip;:8080/compile' version='1.1'  contents='{&quot;code&quot;:&quot;template &lt;int i&gt; class A { A&lt;i-1&gt; x; A&lt;i-2&gt; y;};template &lt;&gt; class A&lt;0&gt; { char a; };template &lt;&gt; class A&lt;1&gt; { char a; };int main() {  A&lt;%%_heavyness%%&gt;  b;  return 0;}&quot;,&quot;cflags&quot;:&quot;&quot;,&quot;clientId&quot;:&quot;A5UDTHgG4Mf4skzuAAAJ&quot;}' content_type='application/json' method='POST'>
           <http_header name='Accept' value='application/json, text/plain, */*' />
           <http_header name='Accept-Encoding' value='gzip, deflate' />
-          <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
+          <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http>
+        </request>
       </transaction>
     </for>
   </session>
