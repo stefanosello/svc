@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE tsung SYSTEM "usr/local/share/tsung/tsung-1.0.dtd" [
+<!DOCTYPE tsung SYSTEM "/usr/local/share/tsung/tsung-1.0.dtd" [
   <!ENTITY ip SYSTEM "ip.txt">
   <!ENTITY interarrival SYSTEM "interarrival.txt">
   <!ENTITY heavyindex "30"> <!-- Until 30 is easy, 35 stays more ore less 6 seconds, 50 is heavy, 300 is impossible -->
@@ -22,14 +22,12 @@
     <monitor host="myserver" type="snmp"></monitor>
   </monitoring>
   
-  <load>
+  <load duration="15" unit="minute">
   <!-- several arrival phases can be set: for each phase, you can set
   the mean inter-arrival time between new clients and the phase
   duration -->
-   <arrivalphase phase="1" duration="15" unit="minute">
-
-    <users interarrival="&interarrival;" unit="second"></users>
-
+   <arrivalphase phase="1" duration="1" unit="second">
+    <users interarrival="&interarrival;" maxnumber="1" unit="second"></users>
    </arrivalphase>
   </load>
 
@@ -46,21 +44,22 @@
 
  <sessions>
   <session name='session_1' probability='100'  type='ts_http'>
-    <transaction name="think">	  
-      <request><http url='http://&ip;' version='1.1' method='GET'>
-       <http_header name='Accept' value='text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8' />
-       <http_header name='Accept-Encoding' value='gzip, deflate' />
-       <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
+    <for from="1" to="150" var="counter">
+      <transaction name="think">	  
+        <request><http url='http://&ip;' version='1.1' method='GET'></request>
+        <thinktime random='true' value='5'/>
+      </transaction>
 
-      <thinktime random='true' value='5'/>
-    </transaction>
-
-    <transaction name="req">
-      <request><http url='http://&ip;:8080/compile' version='1.1'  contents='{&quot;code&quot;:&quot;template &lt;int i&gt; class A { A&lt;i-1&gt; x; A&lt;i-2&gt; y;};template &lt;&gt; class A&lt;0&gt; { char a; };template &lt;&gt; class A&lt;1&gt; { char a; };int main() {  A&lt;&heavyindex;&gt;  b;  return 0;}&quot;,&quot;cflags&quot;:&quot;&quot;,&quot;clientId&quot;:&quot;A5UDTHgG4Mf4skzuAAAJ&quot;}' content_type='application/json' method='POST'>
-        <http_header name='Accept' value='application/json, text/plain, */*' />
-        <http_header name='Accept-Encoding' value='gzip, deflate' />
-        <http_header name='Accept-Language' value='en-GB,en;q=0.5' /></http></request>
-    </transaction>
+      <transaction name="req">
+        <request>
+          <http url='http://&ip;:8080/compile' version='1.1'  contents='{&quot;code&quot;:&quot;template &lt;int i&gt; class A { A&lt;i-1&gt; x; A&lt;i-2&gt; y;};template &lt;&gt; class A&lt;0&gt; { char a; };template &lt;&gt; class A&lt;1&gt; { char a; };int main() {  A&lt;&heavyindex;&gt;  b;  return 0;}&quot;,&quot;cflags&quot;:&quot;&quot;,&quot;clientId&quot;:&quot;A5UDTHgG4Mf4skzuAAAJ&quot;}' content_type='application/json' method='POST'>
+            <http_header name='Accept' value='application/json, text/plain, */*' />
+            <http_header name='Accept-Encoding' value='gzip, deflate' />
+            <http_header name='Accept-Language' value='en-GB,en;q=0.5' />
+          </http>
+        </request>
+      </transaction>
+    </for>
   </session>
  </sessions>
 </tsung>
