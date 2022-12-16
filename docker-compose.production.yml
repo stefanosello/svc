@@ -10,9 +10,9 @@ services:
     env_file:
       - ./frontend/.env.production
     expose:
-      - '80'
+      - '8101'
     ports:
-      - '80:80'
+      - '8101:8101'
     command: ["http-server", "./dist", "-p", "80"]
     depends_on:
       - backend
@@ -30,9 +30,9 @@ services:
       - ./shared:/src
       - ./analysis:/analysis
     expose:
-      - '8080'
+      - '8100'
     ports:
-      - '8080:8080'
+      - '8100:8100'
     command: ["yarn", "run", "start"]
 
 # ---------------[ Compiler service ]------------------
@@ -46,7 +46,7 @@ services:
       - ./shared:/src
       - ./analysis:/analysis
     ports:
-      - '8082:8082'
+      - '8102:8102'
     command: ["yarn", "run", "start"]
     depends_on:
       - backend
