@@ -13,7 +13,7 @@ services:
       - '8101'
     ports:
       - '8101:8101'
-    command: ["http-server", "./dist", "-p", "80"]
+    command: ["http-server", "./dist", "-p", "8101"]
     depends_on:
       - backend
 
