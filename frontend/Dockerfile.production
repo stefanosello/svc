@@ -3,5 +3,5 @@ WORKDIR /home/vue/app
 COPY ./*.json ./
 RUN yarn install
 COPY . .
-RUN yarn build --mode production
+RUN yarn build:production
 RUN npm install --global http-server
