@@ -1,0 +1,15 @@
+name: trigger jenkins compilation
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: trigger single Job
+      uses: appleboy/jenkins-action@master
+      with:
+        url: "https://jenkins.ssello.online/"
+        user: "stefano"
+        token: ${{ secrets.JENKINS_DEPLOY_TOKEN }}
+        job: "svc"
