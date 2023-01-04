@@ -6,10 +6,12 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: trigger single Job
-      uses: appleboy/jenkins-action@master
+    - name: Trigger jenkins job
+      uses: jabbukka/jenkins-trigger@main
       with:
-        url: "https://jenkins.ssello.online/"
-        user: "stefano"
-        token: ${{ secrets.JENKINS_DEPLOY_TOKEN }}
-        job: "svc"
+        url: ${{ secrets.JENKINS_URL }}
+        job_name: "svc"
+        user_name: ${{ secrets.JENKINS_DEPLOY_USER }}
+        api_token: ${{ secrets.JENKINS_DEPLOY_TOKEN }}
+        wait: "true"
+        timeout: "1000"
