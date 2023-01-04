@@ -1,6 +1,0 @@
-[04/Jun/2022:11:17:02 +0200] access to /favicon.ico failed for 127.0.0.1, reason: 
-"httpd_file: Can't access /Users/stefanosello/.tsung/log/20220604-1111/favicon.ico: File not found"
-[04/Jun/2022:11:17:02 +0200], Server: tsung_controller, Protocol: HTTP, Transport: TCP, URI: /favicon.ico, Host: 127.0.0.1:8091, Peer: 127.0.0.1:65466, Reason: [{statuscode,404},{description,"Object Not Found"}]
-[04/Jun/2022:11:17:02 +0200] access to /assets/ico/favicon.ico failed for 127.0.0.1, reason: 
-"httpd_file: Can't access /Users/stefanosello/.tsung/log/20220604-1111/assets/ico/favicon.ico: File not found"
-[04/Jun/2022:11:17:02 +0200], Server: tsung_controller, Protocol: HTTP, Transport: TCP, URI: /assets/ico/favicon.ico, Host: 127.0.0.1:8091, Peer: 127.0.0.1:65472, Reason: [{statuscode,404},{description,"Object Not Found"}]
