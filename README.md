@@ -2,6 +2,8 @@
 
 Software performance and scalability project, UniVE, 2021/2022
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/stefanosello/svc/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/stefanosello/svc/?branch=main)
+
 ## Usage
 
 Start the dev environment:
